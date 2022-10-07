@@ -1,15 +1,18 @@
 {
   "name": "frontend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.0",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "dependencies": {
+    "tailwind": "^4.0.0",
+    "vue": "^3.2.38",
+    "vue-router": "^4.1.5"
+  },
   "devDependencies": {
-    "tailwindcss": "^3.1.8"
+    "@vitejs/plugin-vue": "^3.0.3",
+    "vite": "^3.0.9"
   }
 }
