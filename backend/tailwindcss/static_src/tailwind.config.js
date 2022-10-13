@@ -42,7 +42,11 @@ module.exports = {
         // '../../**/*.py'
     ],
     theme: {
-        extend: {},
+        extend: {
+            backgroundImage: {
+                'repeated-hexagon': "url('https://upcdn.io/W142hJk/raw/demo/7zPZ8cq.jpg')",
+            }
+        },
     },
     plugins: [
         /**
