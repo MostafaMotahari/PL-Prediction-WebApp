@@ -1,10 +1,16 @@
-from django.views.generic.list import ListView
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.views.generic.edit import CreateView
+
+from prediction.models import MatchModel, FixtureModel
+from prediction.forms import MatchFormSet
 
 # Create your views here.
-# class PredictionView(ListView):
-#     template_name = 'prediction.html'
+class PredictionView(CreateView):
+    model = MatchModel
+    template_name = 'prediction.html'
 
-def sample(request):
-    return render(request, 'prediction.html')
+    def get_context_data(self, **kwargs):
+        context = super(MatchModel, self).get_context_data(**kwargs)
+        context['fixtures'] = FixtureModel.objects.filter(GW__GW_number=1)
+        context['formset'] = MatchFormSet()
+
+        return context
