@@ -4,16 +4,19 @@
 {% block content %}
 <div class="my-3 h-screen overflow-y-scroll">
   <form action="" method="post">
-    <div
-      class="flex flex-row justify-center items-center bg-white bg-opacity-40 backdrop-blur-md rounded-xl drop-shadow-lg my-3 p-4 space-x-4">
+    {% csrf_token %}
+
+    {% for fixture, form in fixtures_formset %}
+    <div class="flex flex-row justify-center items-center bg-white bg-opacity-40 backdrop-blur-md rounded-xl drop-shadow-lg my-3 p-4 space-x-4">
       <div class="flex flex-col items-center">
         <img class="w-20 h-20" src="https://seeklogo.com/images/L/liverpool-fc-logo-3B886CFE17-seeklogo.com.png" alt="">
-        <span class="font-bold">Liverpool</span>
+        <span class="font-bold">{{ fixture.home_team.name }}</span>
       </div>
 
       <div class="flex flex-col items-center">
         <i onclick="increaseNumber('liverpool_goals');" class="fa-sharp fa-solid fa-chevron-up"></i>
-        <input id="liverpool_goals" class="bg-transparent border-transparent w-8 p-1 text-center text-2xl font-bold" type="text" value="0" disabled />
+        <!-- <input id="liverpool_goals" class="bg-transparent border-transparent w-8 p-1 text-center text-2xl font-bold" type="text" value="0" disabled /> -->
+        {{ form.team1_score }}
         <i onclick="decreaseNumber('liverpool_goals');" class="fa-sharp fa-solid fa-chevron-down"></i>
       </div>
 
@@ -21,15 +24,17 @@
 
       <div class="flex flex-col items-center">
         <i class="fa-sharp fa-solid fa-chevron-up"></i>
-        <input class="bg-transparent border-transparent w-8 p-1 text-center text-2xl font-bold" type="text" value="0" disabled />
+        <!-- <input class="bg-transparent border-transparent w-8 p-1 text-center text-2xl font-bold" type="text" value="0" disabled /> -->
+        {{ form.team2_score }}
         <i class="fa-sharp fa-solid fa-chevron-down"></i>
       </div>
 
       <div class="flex flex-col items-center">
         <img class="w-20 h-20" src="https://seeklogo.com/images/E/everton-football-club-logo-2D8779FBA9-seeklogo.com.png" alt="">
-        <span class="font-bold">Everton</span>
+        <span class="font-bold">{{ fixture.away_team.name }}</span>
       </div>
     </div>
+    {% endfor %}
   </form>
 </div>
 {% endblock %}

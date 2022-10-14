@@ -1,16 +1,17 @@
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import FormView
 
-from prediction.models import MatchModel, FixtureModel
+from prediction.models import MatchModel, FixtureModel, PredictionModel
 from prediction.forms import MatchFormSet
 
 # Create your views here.
-class PredictionView(CreateView):
-    model = MatchModel
+class PredictionView(FormView):
+    model = PredictionModel
     template_name = 'prediction.html'
+    # fields = ['team1_score', 'team2_score']
+    form_class = MatchFormSet
 
     def get_context_data(self, **kwargs):
-        context = super(MatchModel, self).get_context_data(**kwargs)
-        context['fixtures'] = FixtureModel.objects.filter(GW__GW_number=1)
-        context['formset'] = MatchFormSet()
-
+        context = super().get_context_data(**kwargs)
+        context['fixtures_formset'] = zip(FixtureModel.objects.filter(GW__GW_number=1).all(), MatchFormSet())
+        print(FixtureModel.objects.filter(GW__GW_number=1).all())
         return context

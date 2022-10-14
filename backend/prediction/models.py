@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 
 # Create your models here.
@@ -16,8 +17,8 @@ class TeamModel(models.Model):
 
 class FixtureModel(models.Model):
     GW = models.ForeignKey(GWModel, on_delete=models.CASCADE , verbose_name='Gameweek', related_name='fixtures')
-    home_team = models.ForeignKey(TeamModel, on_delete=models.CASCADE)
-    away_team = models.ForeignKey(TeamModel, on_delete=models.CASCADE)
+    home_team = models.ForeignKey(TeamModel, on_delete=models.CASCADE, related_name='home_team')
+    away_team = models.ForeignKey(TeamModel, on_delete=models.CASCADE, related_name='away_team')
     date = models.DateField()
     time = models.TimeField()
 
@@ -27,7 +28,7 @@ class FixtureModel(models.Model):
 
 class MatchModel(models.Model):
     GW = models.ForeignKey(GWModel, on_delete=models.CASCADE, related_name='matches')
-    fixture = models.ForeignKey(FixtureModel, on_delete=models.CASCADE, related_name='matches')
+    fixture = models.ForeignKey(FixtureModel, on_delete=models.CASCADE, default=None, related_name='matches')
     team1_score = models.IntegerField(default=0, verbose_name='Team 1 Score')
     team2_score = models.IntegerField(default=0, verbose_name='Team 2 Score')
 
