@@ -13,4 +13,4 @@ class MatchForm(forms.ModelForm):
     #     self.fields['team2_score'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Team 2 Score'})
 
 
-MatchFormSet = forms.formset_factory(MatchForm, extra=2)
+MatchFormSet = forms.formset_factory(MatchForm, extra=20)

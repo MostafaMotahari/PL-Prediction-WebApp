@@ -41,8 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # apps
+    # modules
+    'widget_tweaks',
     'tailwind',
+    # apps
     'tailwindcss',
     'prediction.apps.PredictionConfig',
     'account.apps.AccountConfig',
