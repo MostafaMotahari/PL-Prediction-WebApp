@@ -1,3 +1,4 @@
+from wsgiref.simple_server import demo_app
 from prediction.models import GWModel, FixtureModel, TeamModel
 from pyrogram.client import Client
 from pyrogram import filters
@@ -33,7 +34,11 @@ def update_fixtures(client: Client, callback_query: CallbackQuery):
 
     for event in response["events"]:
         if event["is_next"] == True:
-            latest_gw = GWModel.objects.create(GW_number=event["id"])
+            latest_gw = GWModel.objects.create(
+                GW_number=event["id"],
+                deadline=event["deadline_time"]
+            )
+            latest_gw.save()
 
     # Update fixtures
     response = requests.get(BASE_API_URL + "fixtures/", headers=HEADERS).json()
@@ -42,8 +47,8 @@ def update_fixtures(client: Client, callback_query: CallbackQuery):
         if fixture["event"] == latest_gw.GW_number:
             FixtureModel.objects.create(
                 GW=latest_gw,
-                home_team=TeamModel.objects.get(team_id=fixture["team_h"]),
-                away_team=TeamModel.objects.get(team_id=fixture["team_a"]),
+                home_team=TeamModel.objects.get(id=fixture["team_h"]),
+                away_team=TeamModel.objects.get(id=fixture["team_a"]),
                 kickoff_time=fixture["kickoff_time"],
             )
 
