@@ -6,6 +6,9 @@ class GWModel(models.Model):
     GW_number = models.IntegerField()
     deadline = models.DateTimeField()
 
+    def __str__(self):
+        return f"Gameweek {self.GW_number}"
+
 
 class TeamModel(models.Model):
     name = models.CharField(max_length=100, verbose_name='Team Name')
@@ -33,7 +36,7 @@ class MatchModel(models.Model):
     team2_score = models.IntegerField(default=0, verbose_name='Team 2 Score')
 
     def __str__(self):
-        return self.team1.name + ' vs ' + self.team2.name
+        return self.fixture.__str__()
 
 
 class PredictionModel(models.Model):
