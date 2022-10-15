@@ -1,6 +1,7 @@
 {% extends "base/_base.html" %}
 {% load static %}
 {% load widget_tweaks %}
+{% load zip_lists %}
 
 {% block content %}
 <!-- Match Cards -->
@@ -8,7 +9,7 @@
   <div class="h-screen overflow-y-scroll">
     {% csrf_token %}
     
-    {% for fixture, form in fixtures_formset %}
+    {% for fixture, form in fixtures|zip:formset %}
     <input type="hidden" id="fixture_id" value="{{ fixture.id }}">
     
     <div class="flex flex-row justify-center items-center bg-white bg-opacity-40 backdrop-blur-md rounded-xl drop-shadow-lg my-3 p-4 space-x-4 font-['Ubuntu']">
