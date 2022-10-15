@@ -1,12 +1,11 @@
 import os
 
+from account.models import User
 from pyrogram import filters
 from pyrogram.client import Client
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from decouple import config
 
-from src.sql.session import get_db
-from src.sql.methods import get_all_users
 from src.plugins.custom_filters import admin_filter
 
 # Message templates
@@ -26,9 +25,9 @@ async def settings(client: Client, message: Message):
         SETTING_MESSAGE.format(
             "⬜️🟩" if config("BOT_POWER_MODE") == "ON" else "🟥⬜️",
             "🟥⬜️" if config("BOT_PREDICTION_MODE") == "OFF" else "⬜️🟩",
-            len(get_all_users(get_db().__next__())),
-            len([user for user in get_all_users(get_db().__next__()) if user.status == "admin"]),
-            len([user for user in get_all_users(get_db().__next__()) if user.status == "banned"]),
+            len(User.objects.all()),
+            len(User.objects.filter(status="admin")),
+            len(User.objects.filter(status="banned")),
         ),
         reply_markup=InlineKeyboardMarkup(
             [

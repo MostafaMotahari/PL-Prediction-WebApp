@@ -1,10 +1,8 @@
+from account.models import User
 from pyrogram import filters
 from pyrogram.client import Client
 from pyrogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
 from decouple import config
-
-from src.sql.session import get_db
-from src.sql.methods import get_all_users
 
 
 @Client.on_message(filters.private & filters.command(["broadcast"]) & \
@@ -36,8 +34,7 @@ async def public_message(client: Client, callback_query: CallbackQuery):
         )
         return
     
-    db_session = get_db().__next__()
-    users = get_all_users(db_session)
+    users = User.objects.all()
     for user in users:
         try:
             await callback_query.message.copy(

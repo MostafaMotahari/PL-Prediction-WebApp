@@ -8,8 +8,10 @@ from pyrogram.client import Client
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, InputMediaPhoto
 from prettytable import PrettyTable
 
-from src.__main__ import BASE_API_URL
-from src.plugins.custom_filters import power_mode_filter, banned_filter
+from telegram_bot.plugins.custom_filters import power_mode_filter, banned_filter
+
+# Static variables
+BASE_API_URL = "https://fantasy.premierleague.com/api/"
 
 # League data scraper
 async def league_scraper(message: Message, league_id: int, standing_page: int = 1):

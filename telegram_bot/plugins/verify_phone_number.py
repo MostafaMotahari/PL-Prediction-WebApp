@@ -1,16 +1,13 @@
+from account.models import User
 from pyrogram import filters
 from pyrogram.client import Client
 from pyrogram.types import Message
-
-from src.sql.session import get_db
-from src.sql.methods import get_user
 
 # ToDo: add an option to change country code from env file or settings.
 @Client.on_message(filters.private & filters.contact)
 async def verify_phone_number(client: Client, message: Message):
 
-    db_session = get_db().__next__()
-    user = get_user(db_session, message.from_user.id)
+    user = User.objects.get(telegram_id=message.from_user.id)
     if user:
         if user.phone_number:
             await message.reply_text(
@@ -20,7 +17,7 @@ async def verify_phone_number(client: Client, message: Message):
 
         elif message.contact.phone_number.startswith("+98"):
             user.phone_number = message.contact.phone_number
-            db_session.commit()
+            user.save()
             await message.reply_text(
                 "✅ Your phone number has been successfully verified."
             )

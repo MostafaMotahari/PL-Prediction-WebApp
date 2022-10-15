@@ -1,14 +1,12 @@
+from account.models import User
 from pyrogram import filters
 from pyrogram.client import Client
 from pyrogram.types import Message
 
-from src.sql.session import get_db
-from src.sql.methods import get_user
 
 @Client.on_message(filters.private & filters.regex("^👤 Profile$"))
 async def profile(client: Client, message: Message):
-    db_session = get_db().__next__()
-    user = get_user(db_session, message.from_user.id)
+    user = User.objects.get(telegram_id=message.from_user.id)
 
     await message.reply_text(
         "👤 Profile\n"
@@ -19,6 +17,7 @@ async def profile(client: Client, message: Message):
         f"- Status: {user.status}\n\n"
         
         "⭐️ Prediction points:\n"
-        f"- Weekly points: {user.weekly_points}\n"
-        f"- Total points: {user.total_points}\n"
+        f"- Weekly points: {user.weekly_prediction_points}\n"
+        f"- Monthly points: {user.monthly_prediction_points}\n"
+        f"- Total points: {user.total_pointstotal_points}\n"
     )
