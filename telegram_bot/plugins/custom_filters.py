@@ -8,9 +8,9 @@ power_mode_filter = filters.create(
 )
 
 admin_filter = filters.create(
-    lambda _, __, message: User.objects.filter(telegram_id=message.from_user.id).status == "admin"
+    lambda _, __, message: User.objects.get(telegram_id=message.from_user.id).status == "admin"
 )
 
 banned_filter = filters.create(
-    lambda _, __, message: User.objects.filter(telegram_id=message.from_user.id).status != "banned"
+    lambda _, __, message: User.objects.get(telegram_id=message.from_user.id).status != "banned"
 )

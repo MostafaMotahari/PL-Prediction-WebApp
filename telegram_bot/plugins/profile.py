@@ -19,5 +19,5 @@ def profile(client: Client, message: Message):
         "⭐️ Prediction points:\n"
         f"- Weekly points: {user.weekly_prediction_points}\n"
         f"- Monthly points: {user.monthly_prediction_points}\n"
-        f"- Total points: {user.total_pointstotal_points}\n"
+        f"- Total points: {user.total_prediction_points}\n"
     )

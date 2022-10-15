@@ -26,8 +26,8 @@ def settings(client: Client, message: Message):
             "⬜️🟩" if config("BOT_POWER_MODE") == "ON" else "🟥⬜️",
             "🟥⬜️" if config("BOT_PREDICTION_MODE") == "OFF" else "⬜️🟩",
             len(User.objects.all()),
-            len(User.objects.filter(status="admin")),
-            len(User.objects.filter(status="banned")),
+            len(User.objects.filter(status="admin").all()),
+            len(User.objects.filter(status="banned").all()),
         ),
         reply_markup=InlineKeyboardMarkup(
             [
@@ -59,9 +59,9 @@ def power_mode(client: Client, callback_query):
         SETTING_MESSAGE.format(
             "🟥⬜️" if config("BOT_POWER_MODE") == "OFF" else "⬜️🟩",
             "🟥⬜️" if config("BOT_PREDICTION_MODE") == "OFF" else "⬜️🟩",
-            len(get_all_users(get_db().__next__())),
-            len([user for user in get_all_users(get_db().__next__()) if user.status == "admin"]),
-            len([user for user in get_all_users(get_db().__next__()) if user.status == "banned"]),
+            len(User.objects.all()),
+            len(User.objects.filter(status="admin").all()),
+            len(User.objects.filter(status="banned").all()),
         ),
         reply_markup=InlineKeyboardMarkup(
             [
@@ -96,9 +96,9 @@ def prediction_mode(client: Client, callback_query):
         SETTING_MESSAGE.format(
             "🟥⬜️" if config("BOT_POWER_MODE") == "OFF" else "⬜️🟩",
             "🟥⬜️" if config("BOT_PREDICTION_MODE") == "OFF" else "⬜️🟩",
-            len(get_all_users(get_db().__next__())),
-            len([user for user in get_all_users(get_db().__next__()) if user.status == "admin"]),
-            len([user for user in get_all_users(get_db().__next__()) if user.status == "banned"]),
+            len(User.objects.all()),
+            len(User.objects.filter(status="admin").all()),
+            len(User.objects.filter(status="banned").all()),
         ),
         reply_markup=InlineKeyboardMarkup(
             [
