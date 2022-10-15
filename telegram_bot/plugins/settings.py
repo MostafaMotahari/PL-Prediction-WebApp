@@ -20,8 +20,8 @@ Prediction mode: {}
 """
 
 @Client.on_message(admin_filter & filters.private & filters.command(["settings"]))
-async def settings(client: Client, message: Message):
-    await message.reply_text(
+def settings(client: Client, message: Message):
+    message.reply_text(
         SETTING_MESSAGE.format(
             "⬜️🟩" if config("BOT_POWER_MODE") == "ON" else "🟥⬜️",
             "🟥⬜️" if config("BOT_PREDICTION_MODE") == "OFF" else "⬜️🟩",
@@ -45,7 +45,7 @@ async def settings(client: Client, message: Message):
 
 # Power mode snippet
 @Client.on_callback_query(filters.regex("power_(on|off)"))
-async def power_mode(client: Client, callback_query):
+def power_mode(client: Client, callback_query):
     if callback_query.data == "power_on":
         # Power mode is off, turn it on
         os.environ["BOT_POWER_MODE"] = "ON"
@@ -55,7 +55,7 @@ async def power_mode(client: Client, callback_query):
         # Power mode is on, turn it off
         os.environ["BOT_POWER_MODE"] = "OFF"
 
-    await callback_query.edit_message_text(
+    callback_query.edit_message_text(
         SETTING_MESSAGE.format(
             "🟥⬜️" if config("BOT_POWER_MODE") == "OFF" else "⬜️🟩",
             "🟥⬜️" if config("BOT_PREDICTION_MODE") == "OFF" else "⬜️🟩",
@@ -80,7 +80,7 @@ async def power_mode(client: Client, callback_query):
 
 # Prediction mode snippets
 @Client.on_callback_query(filters.regex("prediction_(on|off)"))
-async def prediction_mode(client: Client, callback_query):
+def prediction_mode(client: Client, callback_query):
     if callback_query.data == "prediction_on":
         # Prediction mode is off, turn it on
         os.environ["BOT_PREDICTION_MODE"] = "ON"
@@ -92,7 +92,7 @@ async def prediction_mode(client: Client, callback_query):
         # Prediction mode is on, turn it off
         os.environ["BOT_PREDICTION_MODE"] = "OFF"
 
-    await callback_query.edit_message_text(
+    callback_query.edit_message_text(
         SETTING_MESSAGE.format(
             "🟥⬜️" if config("BOT_POWER_MODE") == "OFF" else "⬜️🟩",
             "🟥⬜️" if config("BOT_PREDICTION_MODE") == "OFF" else "⬜️🟩",

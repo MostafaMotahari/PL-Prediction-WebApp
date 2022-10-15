@@ -7,8 +7,8 @@ from decouple import config
 
 @Client.on_message(filters.private & filters.command(["broadcast"]) & \
     filters.reply & filters.user(int(config("OWNER_ID"))))
-async def public_message_preview(client: Client, message: Message):
-    await message.reply_to_message.copy(
+def public_message_preview(client: Client, message: Message):
+    message.reply_to_message.copy(
         message.chat.id,
         reply_markup=InlineKeyboardMarkup(
             [[

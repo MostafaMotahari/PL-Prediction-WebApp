@@ -5,8 +5,8 @@ from pyrogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 
 
 @Client.on_message(filters.private & filters.command(["start"]))
-async def start(client: Client, message: Message):
-    await message.reply_text(
+def start(client: Client, message: Message):
+    message.reply_text(
         "Hi! I'm a bot created by @FBI_Coach.\n"
         "I'm created by @Mousiol.\n"
         "I'm a bot that can help you to get the latest stats from the Fantasy Premier League.\n"

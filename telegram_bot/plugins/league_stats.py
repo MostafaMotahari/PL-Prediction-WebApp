@@ -1,4 +1,3 @@
-from importlib.util import decode_source
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
@@ -14,7 +13,7 @@ from telegram_bot.plugins.custom_filters import power_mode_filter, banned_filter
 BASE_API_URL = "https://fantasy.premierleague.com/api/"
 
 # League data scraper
-async def league_scraper(message: Message, league_id: int, standing_page: int = 1):
+def league_scraper(message: Message, league_id: int, standing_page: int = 1):
     # Get league data
     
         # Get classic league from api
@@ -53,7 +52,7 @@ async def league_scraper(message: Message, league_id: int, standing_page: int = 
         inline_keyboard[0].append(InlineKeyboardButton("Next Page", callback_data=f"{league_id}:{standing_page + 1}"))
 
     # Send the league state as new message
-    await message.edit_media(
+    message.edit_media(
         media=InputMediaPhoto(
             media="src/static/standings.png",
 
@@ -69,12 +68,12 @@ async def league_scraper(message: Message, league_id: int, standing_page: int = 
 # Choosing a league to scrap
 @Client.on_message(power_mode_filter & banned_filter & \
     filters.private & filters.command(["leagues"]))
-async def send_leagues(client: Client, message: Message):
+def send_leagues(client: Client, message: Message):
 
     if len(message.text.split(" ")) == 1:
         leagues = config("LEAGUES_ID", cast=lambda v: [s.strip() for s in v.split(',')])
 
-        await client.send_animation(
+        client.send_animation(
             chat_id=message.chat.id,
             animation="src/static/loading_gif.gif",
             caption="Please choose one of the following leagues:\n\n",
@@ -84,26 +83,26 @@ async def send_leagues(client: Client, message: Message):
         )
 
     elif len(message.text.split(" ")) == 2:
-        table_message = await client.send_animation(
+        table_message = client.send_animation(
             chat_id=message.chat.id,
             animation="src/static/loading_gif.gif",
             caption="Please Wait..."
         )
-        await league_scraper(table_message, int(message.text.split(" ")[1]))
+        league_scraper(table_message, int(message.text.split(" ")[1]))
 
     else:
-        await message.reply_text("Wrong command format.\n\nUsage: /leagues `[league_id]`")
+        message.reply_text("Wrong command format.\n\nUsage: /leagues `[league_id]`")
 
 
 # Main function that gets league data from fpl api and sort it
 @Client.on_callback_query(power_mode_filter & banned_filter & filters.regex("^[0-9]+"))
-async def get_league_state(client: Client, callback_query: CallbackQuery):
+def get_league_state(client: Client, callback_query: CallbackQuery):
 
     league_id = int(callback_query.data.split(":")[0])
     standing_page = 1 if len(callback_query.data.split(":")) == 1 else int(callback_query.data.split(":")[1])
 
     # Send Waiting message
-    await callback_query.message.edit_caption("Please Wait...")
+    callback_query.message.edit_caption("Please Wait...")
 
     # Get league data
-    await league_scraper(callback_query.message, league_id, standing_page)
+    league_scraper(callback_query.message, league_id, standing_page)

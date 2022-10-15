@@ -5,12 +5,12 @@ from pyrogram.types import Message
 
 # ToDo: add an option to change country code from env file or settings.
 @Client.on_message(filters.private & filters.contact)
-async def verify_phone_number(client: Client, message: Message):
+def verify_phone_number(client: Client, message: Message):
 
     user = User.objects.get(telegram_id=message.from_user.id)
     if user:
         if user.phone_number:
-            await message.reply_text(
+            message.reply_text(
                 "✅ You already have a phone number associated with your account."
             )
             return
@@ -18,16 +18,16 @@ async def verify_phone_number(client: Client, message: Message):
         elif message.contact.phone_number.startswith("+98"):
             user.phone_number = message.contact.phone_number
             user.save()
-            await message.reply_text(
+            message.reply_text(
                 "✅ Your phone number has been successfully verified."
             )
             return
 
-        await message.reply_text(
+        message.reply_text(
             "❌ You can only use an Iranian phone number."
         )
 
     else:
-        await message.reply_text(
+        message.reply_text(
             "❌ You don't have an account with us."
         )
