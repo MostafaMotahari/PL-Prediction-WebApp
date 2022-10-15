@@ -3,6 +3,10 @@
 {% load widget_tweaks %}
 {% load zip_lists %}
 
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/custom.css' %}">
+{% endblock %}
+
 {% block content %}
 <!-- Match Cards -->
 <form action="" method="post">
@@ -30,7 +34,6 @@
 
       <div class="flex flex-col items-center">
         <i onclick="increaseNumber('{{ form.team2_score.auto_id }}');" class="fa-sharp fa-solid fa-chevron-up"></i>
-        <!-- <input class="" type="text" value="0"  /> -->
         {{ form.team2_score|add_class:"bg-transparent border-transparent w-8 p-1 text-center text-2xl font-bold" }}
         <i onclick="decreaseNumber('{{ form.team2_score.auto_id }}');" class="fa-sharp fa-solid fa-chevron-down"></i>
       </div>
@@ -55,7 +58,7 @@
       
       <div class="flex flex-col">
         <span>Gameweek: 1</span>
-        <span>Your ID: 127863487</span>
+        <span>Your ID: {{ user.telegram_id }}</span>
       </div>
 
     </div>

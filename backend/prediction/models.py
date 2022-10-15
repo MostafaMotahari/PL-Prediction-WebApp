@@ -43,4 +43,4 @@ class PredictionModel(models.Model):
     GW = models.ForeignKey(GWModel, on_delete=models.CASCADE, related_name='gw_predictions')
     filled_by = models.ForeignKey('account.User', default=None, on_delete=models.CASCADE, related_name='predictions')
     filled_date_time = models.DateTimeField(auto_now_add=True, verbose_name='Filled Date Time')
-    matches = models.ManyToManyField(MatchModel, related_name='prediction_to', verbose_name='Matches')
+    matches = models.ForeignKey(MatchModel, related_name='prediction_to', verbose_name='Matches')
