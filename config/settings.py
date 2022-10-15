@@ -46,8 +46,9 @@ INSTALLED_APPS = [
     'tailwind',
     # apps
     'tailwindcss',
-    'prediction.apps.PredictionConfig',
-    'account.apps.AccountConfig',
+    'prediction',
+    'account',
+    'telegram_bot',
 ]
 
 MIDDLEWARE = [

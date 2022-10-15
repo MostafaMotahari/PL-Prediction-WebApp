@@ -6,7 +6,7 @@ from pyrogram.client import Client
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from decouple import config
 
-from src.plugins.custom_filters import admin_filter
+from telegram_bot.plugins.custom_filters import admin_filter
 
 # Message templates
 SETTING_MESSAGE = """
