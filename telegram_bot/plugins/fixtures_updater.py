@@ -9,7 +9,8 @@ BASE_API_URL = "https://fantasy.premierleague.com/api/"
 HEADERS = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:88.0) Gecko/20100101 Firefox/88.0"}
 
 def need_to_update_fixtures():
-    latest_gw = GWModel.objects.latest("id")
+    try: latest_gw = GWModel.objects.latest("id") 
+    except: return True
 
     response = requests.get(BASE_API_URL + "bootstrap-static/", headers=HEADERS).json()
 

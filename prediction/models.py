@@ -22,7 +22,7 @@ class FixtureModel(models.Model):
     GW = models.ForeignKey(GWModel, on_delete=models.CASCADE , verbose_name='Gameweek', related_name='fixtures')
     home_team = models.ForeignKey(TeamModel, on_delete=models.CASCADE, related_name='home_team')
     away_team = models.ForeignKey(TeamModel, on_delete=models.CASCADE, related_name='away_team')
-    kickoff_time = models.DateTimeField()
+    kickoff_time = models.DateTimeField(null=True)
 
     def __str__(self):
         return f'{self.home_team} vs {self.away_team}'

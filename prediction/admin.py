@@ -9,7 +9,7 @@ class TeamAdmin(admin.ModelAdmin):
     list_display = ('name', 'logo')
 
 class FixtureAdmin(admin.ModelAdmin):
-    list_display = ('GW', 'home_team', 'away_team', 'date', 'time')
+    list_display = ('GW', 'home_team', 'away_team', 'kickoff_time')
 
 class MatchAdmin(admin.ModelAdmin):
     list_display = ('GW', 'fixture', 'team1_score', 'team2_score')

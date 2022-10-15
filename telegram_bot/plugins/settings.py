@@ -50,7 +50,7 @@ def settings(client: Client, message: Message):
         SETTING_MESSAGE.format(
             "⬜️🟩" if config("BOT_POWER_MODE") == "ON" else "🟥⬜️",
             "🟥⬜️" if config("BOT_PREDICTION_MODE") == "OFF" else "⬜️🟩",
-            "🟥⬜️" if need_to_update_fixtures() else "⬜️🟩",
+            "⬜️🟩" if need_to_update_fixtures() else "🟥⬜️",
             len(User.objects.all()),
             len(User.objects.filter(status="admin").all()),
             len(User.objects.filter(status="banned").all()),
@@ -68,9 +68,7 @@ def power_mode(client: Client, callback_query):
     if callback_query.data == "power_on":
         # Power mode is off, turn it on
         os.environ["BOT_POWER_MODE"] = "ON"
-
     else:
-
         # Power mode is on, turn it off
         os.environ["BOT_POWER_MODE"] = "OFF"
 
@@ -78,7 +76,7 @@ def power_mode(client: Client, callback_query):
         SETTING_MESSAGE.format(
             "🟥⬜️" if config("BOT_POWER_MODE") == "OFF" else "⬜️🟩",
             "🟥⬜️" if config("BOT_PREDICTION_MODE") == "OFF" else "⬜️🟩",
-            "🟥⬜️" if need_to_update_fixtures() else "⬜️🟩",
+            "⬜️🟩" if need_to_update_fixtures() else "🟥⬜️",
             len(User.objects.all()),
             len(User.objects.filter(status="admin").all()),
             len(User.objects.filter(status="banned").all()),
@@ -105,7 +103,7 @@ def prediction_mode(client: Client, callback_query):
         SETTING_MESSAGE.format(
             "🟥⬜️" if config("BOT_POWER_MODE") == "OFF" else "⬜️🟩",
             "🟥⬜️" if config("BOT_PREDICTION_MODE") == "OFF" else "⬜️🟩",
-            "🟥⬜️" if need_to_update_fixtures() else "⬜️🟩",
+            "⬜️🟩" if need_to_update_fixtures() else "🟥⬜️",
             len(User.objects.all()),
             len(User.objects.filter(status="admin").all()),
             len(User.objects.filter(status="banned").all()),
