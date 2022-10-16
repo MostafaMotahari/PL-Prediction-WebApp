@@ -9,65 +9,66 @@
 
 {% block content %}
 <!-- Match Cards -->
-<form action="" method="post">
-  <div class="h-screen overflow-y-scroll">
-    {% csrf_token %}
-    {{ formset.management_form }}
-    
-    {% for fixture, form in fixtures|zip:formset %}
-
-    {% render_field form.fixture_id value=fixture.id %}
-    
-    <div class="flex flex-row justify-center items-center bg-white bg-opacity-40 backdrop-blur-md rounded-xl drop-shadow-lg my-3 p-4 space-x-4 font-['Ubuntu']">
-      <div class="flex flex-col items-center">
-        <img class="w-20 h-20" src="https://seeklogo.com/images/L/liverpool-fc-logo-3B886CFE17-seeklogo.com.png" alt="">
-        <span class="font-bold">{{ fixture.home_team.name }}</span>
-      </div>
-
-      <div class="flex flex-col items-center">
-        <i onclick="increaseNumber('{{ form.team1_score.auto_id }}');" class="fa-sharp fa-solid fa-chevron-up"></i>
-        {{ form.team1_score|add_class:"bg-transparent border-transparent w-8 p-1 text-center text-2xl font-bold" }}
-        <i onclick="decreaseNumber('{{ form.team1_score.auto_id }}');" class="fa-sharp fa-solid fa-chevron-down"></i>
-      </div>
-
-      <img class="w-10 h-10" src="{% static 'img/vs.png' %}" alt="">
-
-      <div class="flex flex-col items-center">
-        <i onclick="increaseNumber('{{ form.team2_score.auto_id }}');" class="fa-sharp fa-solid fa-chevron-up"></i>
-        {{ form.team2_score|add_class:"bg-transparent border-transparent w-8 p-1 text-center text-2xl font-bold" }}
-        <i onclick="decreaseNumber('{{ form.team2_score.auto_id }}');" class="fa-sharp fa-solid fa-chevron-down"></i>
-      </div>
-
-      <div class="flex flex-col items-center">
-        <img class="w-20 h-20" src="https://seeklogo.com/images/E/everton-football-club-logo-2D8779FBA9-seeklogo.com.png" alt="">
-        <span class="font-bold">{{ fixture.away_team.name }}</span>
-      </div>
-    </div>
-    {% endfor %}
-    
-  </div>
-  
-  <!-- Submit Bar -->
-  <div class="flex flex-row md:rounded-t-lg outline outline-offset-2 outline-1 p-3 bg-white bg-opacity-40 backdrop-blur-md drop-shadow-lg fixed inset-x-0 md:inset-x-1/4 lg:inset-x-1/3 bottom-0">
-    <div class="flex flex-row font-bold font-['Ubuntu'] space-x-2">
-
-      <div class="flex flex-col justify-center space-y-2">
-        <i class="fa-solid fa-bolt-lightning"></i>
-        <i class="fa-sharp fa-solid fa-circle-info"></i>
-      </div>
+<div class="h-screen overflow-y-scroll">
+  <form action="" method="post">
+    <div class="flex flex-col">
+      {% csrf_token %}
+      {{ formset.management_form }}
       
-      <div class="flex flex-col">
-        <span>Gameweek: {{ game_week.GW_number }}</span>
-        <span>Your ID: {{ user.telegram_id }}</span>
-      </div>
+      {% for fixture, form in fixtures|zip:formset %}
 
+      {% render_field form.fixture_id value=fixture.id %}
+      
+      <div class="flex flex-row justify-center items-center bg-white bg-opacity-40 backdrop-blur-md rounded-xl drop-shadow-lg my-3 p-4 space-x-2 lg:space-x-4 font-['Ubuntu']">
+        <div class="flex flex-col items-center">
+          <img class="w-20 h-20" src="https://seeklogo.com/images/L/liverpool-fc-logo-3B886CFE17-seeklogo.com.png" alt="">
+          <span class="font-bold">{{ fixture.home_team.name }}</span>
+        </div>
+
+        <div class="flex flex-col items-center">
+          <i onclick="increaseNumber('{{ form.team1_score.auto_id }}');" class="fa-sharp fa-solid fa-chevron-up"></i>
+          {{ form.team1_score|add_class:"bg-transparent border-transparent w-8 p-1 text-center text-2xl font-bold" }}
+          <i onclick="decreaseNumber('{{ form.team1_score.auto_id }}');" class="fa-sharp fa-solid fa-chevron-down"></i>
+        </div>
+
+        <img class="w-10 h-10" src="{% static 'img/vs.png' %}" alt="">
+
+        <div class="flex flex-col items-center">
+          <i onclick="increaseNumber('{{ form.team2_score.auto_id }}');" class="fa-sharp fa-solid fa-chevron-up"></i>
+          {{ form.team2_score|add_class:"bg-transparent border-transparent w-8 p-1 text-center text-2xl font-bold" }}
+          <i onclick="decreaseNumber('{{ form.team2_score.auto_id }}');" class="fa-sharp fa-solid fa-chevron-down"></i>
+        </div>
+
+        <div class="flex flex-col items-center">
+          <img class="w-20 h-20" src="https://seeklogo.com/images/E/everton-football-club-logo-2D8779FBA9-seeklogo.com.png" alt="">
+          <span class="font-bold">{{ fixture.away_team.name }}</span>
+        </div>
+      </div>
+      {% endfor %}
+      
     </div>
-    <button class="flex bg-white bg-opacity-40 backdrop-blur-md shadow-xl rounded-full h-16 w-16 items-center justify-center absolute right-4 -mt-9" type="submit">
-      <img class="w-6 h-6" src="{% static 'img/football.png' %}" alt="">
-    </button>
-  </div>
-</form>
-  
+    
+    <!-- Submit Bar -->
+    <div class="flex flex-row md:rounded-t-lg outline outline-offset-2 outline-1 p-3 bg-white bg-opacity-40 backdrop-blur-md drop-shadow-lg sticky md:mx-1 bottom-0">
+      <div class="flex flex-row font-bold font-['Ubuntu'] space-x-2">
+
+        <div class="flex flex-col justify-center space-y-2">
+          <i class="fa-solid fa-bolt-lightning"></i>
+          <i class="fa-sharp fa-solid fa-circle-info"></i>
+        </div>
+        
+        <div class="flex flex-col">
+          <span>Gameweek: {{ game_week.GW_number }}</span>
+          <span>Your ID: {{ user.telegram_id }}</span>
+        </div>
+
+      </div>
+      <button class="flex bg-white bg-opacity-40 backdrop-blur-md shadow-xl rounded-full h-16 w-16 items-center justify-center absolute right-4 -mt-9" type="submit">
+        <img class="w-6 h-6" src="{% static 'img/football.png' %}" alt="">
+      </button>
+    </div>
+  </form>
+</div>
 {% endblock %}
 
 {% block scripts %}
