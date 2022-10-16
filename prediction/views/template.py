@@ -2,9 +2,10 @@ from django.views.generic.edit import FormView
 
 from prediction.models import FixtureModel, PredictionModel, GWModel
 from prediction.forms import MatchFormSet
+from prediction.mixins import TokenValidationMixin
 
 # Create your views here.
-class PredictionView(FormView):
+class PredictionView(TokenValidationMixin, FormView):
     model = PredictionModel
     template_name = 'prediction.html'
     form_class = MatchFormSet

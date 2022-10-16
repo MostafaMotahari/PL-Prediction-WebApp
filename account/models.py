@@ -11,3 +11,5 @@ class User(AbstractUser):
     total_prediction_points = models.IntegerField(default=0, verbose_name="Total Prediction Points")
     monthly_prediction_points = models.IntegerField(default=0, verbose_name="Monthly Prediction Points")
     weekly_prediction_points = models.IntegerField(default=0, verbose_name="Weekly Prediction Points")
+    prediction_token = models.CharField(max_length=100, blank=True, null=True, verbose_name="Prediction Token")
+    token_expiry = models.DateTimeField(blank=True, null=True, verbose_name="Token Expiry")
