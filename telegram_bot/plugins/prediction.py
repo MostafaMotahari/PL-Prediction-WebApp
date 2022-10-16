@@ -17,7 +17,7 @@ def prediction_menu(client: Client, message: Message):
             prediction_token = secrets.token_urlsafe(32)
             user = User.objects.get(telegram_id=message.from_user.id)
             user.prediction_token = prediction_token
-            token_expiry = timezone.now() + timezone.timedelta(minutes=30)
+            user.token_expiry = timezone.now() + timezone.timedelta(minutes=30)
             user.save()
 
             message.reply_text(
@@ -26,7 +26,7 @@ def prediction_menu(client: Client, message: Message):
                 reply_markup=InlineKeyboardMarkup([
                     [InlineKeyboardButton(
                         text="🔗 Prediction Token 🔗",
-                        url=f"https://fplbot.herokuapp.com/prediction/{prediction_token}"
+                        url=f"https://127.0.0.1:8000/prediction/{prediction_token}"
                     )]
                 ])
             )

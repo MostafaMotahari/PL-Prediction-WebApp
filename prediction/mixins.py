@@ -12,7 +12,9 @@ class TokenValidationMixin:
             user = User.objects.get(prediction_token=token)
             if user.token_expiry > timezone.now():
                 return True
+            else: print(user.token_expiry, timezone.now(), timezone.get_current_timezone())
         except User.DoesNotExist:
+            print("User does not exist.")
             pass
         return False
 
