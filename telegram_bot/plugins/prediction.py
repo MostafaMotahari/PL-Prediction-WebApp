@@ -26,7 +26,7 @@ def prediction_menu(client: Client, message: Message):
                 reply_markup=InlineKeyboardMarkup([
                     [InlineKeyboardButton(
                         text="🔗 Prediction Token 🔗",
-                        url=f"https://127.0.0.1:8000/prediction/{prediction_token}"
+                        url=f"http://127.0.0.1:8000/prediction/{prediction_token}"
                     )]
                 ])
             )

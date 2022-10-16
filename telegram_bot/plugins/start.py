@@ -23,5 +23,11 @@ def start(client: Client, message: Message):
     )
 
     # Register a user
-    if User.objects.filter(telegram_id=message.from_user.id) is None:
-        User.objects.create(telegram_id=message.from_user.id)
+    try:
+        User.objects.get(telegram_id=message.from_user.id)
+    except User.DoesNotExist:
+        User.objects.create(
+            username=message.from_user.first_name,
+            telegram_id=message.from_user.id,
+            status="user"
+        )

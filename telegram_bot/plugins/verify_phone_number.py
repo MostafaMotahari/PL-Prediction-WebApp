@@ -15,7 +15,7 @@ def verify_phone_number(client: Client, message: Message):
             )
             return
 
-        elif message.contact.phone_number.startswith("+98"):
+        elif message.contact.phone_number.startswith("+98") or message.contact.phone_number.startswith("98"):
             user.phone_number = message.contact.phone_number
             user.save()
             message.reply_text(
