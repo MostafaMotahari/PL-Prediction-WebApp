@@ -57,13 +57,13 @@
       </div>
       
       <div class="flex flex-col">
-        <span>Gameweek: 1</span>
+        <span>Gameweek: {{ game_week.GW_number }}</span>
         <span>Your ID: {{ user.telegram_id }}</span>
       </div>
 
     </div>
     <button class="flex bg-white bg-opacity-40 backdrop-blur-md shadow-xl rounded-full h-16 w-16 items-center justify-center absolute right-4 -mt-9" type="submit">
-      <i class="fa-solid fa-futbol"></i>
+      <img class="w-6 h-6" src="{% static 'img/football.png' %}" alt="">
     </button>
   </div>
 </form>

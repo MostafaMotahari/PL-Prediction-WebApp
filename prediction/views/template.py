@@ -1,6 +1,6 @@
 from django.views.generic.edit import FormView
 from django.shortcuts import render
-from time import timezone
+from django.utils import timezone
 
 from prediction.models import FixtureModel, PredictionModel, GWModel
 from prediction.forms import MatchFormSet
@@ -16,6 +16,7 @@ class PredictionView(TokenValidationMixin, FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         latest_gw = GWModel.objects.latest('id')
+        context['game_week'] = latest_gw
         context['fixtures'] = FixtureModel.objects.filter(GW=latest_gw)
         context['formset'] = MatchFormSet()
         return context
@@ -34,14 +35,15 @@ class PredictionView(TokenValidationMixin, FormView):
                 instance.GW = gw_obj
                 print(form.cleaned_data)
                 instance.fixture = FixtureModel.objects.get(id=form.cleaned_data['fixture_id'])
+                instance.prediction = prediction
                 instance.save()
-
-                prediction.matches.add(instance)
 
             prediction.save()
             request.user.token_expiry = timezone.now()
             request.user.save()
 
-            return render(request, 'success.html')
+            return render(request, 'successful_predict.html')
 
+        print(formset.errors)
+        print(formset.non_form_errors())
         return render(request, 'failed.html')

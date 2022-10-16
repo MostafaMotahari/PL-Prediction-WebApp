@@ -1,7 +1,6 @@
 from account.models import User
 from django.shortcuts import render
-from time import timezone
-
+from django.utils import timezone
 
 class TokenValidationMixin:
     """ This WebApp uses token to allow the user to predict fixtures.
@@ -21,8 +20,8 @@ class TokenValidationMixin:
         return render(self.request, 'token_expired.html')
 
     def dispatch(self, request, *args, **kwargs):
-        if not self.validate_token(request.GET.get("token")):
+        if not self.validate_token(kwargs['token']):
             return self.handle_no_permission()
         
-        request.user = User.objects.get(prediction_token=request.GET.get("token"))
+        request.user = User.objects.get(prediction_token=kwargs['token'])
         return super().dispatch(request, *args, **kwargs)

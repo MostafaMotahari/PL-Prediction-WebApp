@@ -33,6 +33,7 @@ class MatchModel(models.Model):
     fixture = models.ForeignKey(FixtureModel, default=None, on_delete=models.CASCADE, related_name='matches')
     team1_score = models.IntegerField(default=0, verbose_name='Team 1 Score')
     team2_score = models.IntegerField(default=0, verbose_name='Team 2 Score')
+    prediction = models.ForeignKey('PredictionModel', default=None, on_delete=models.CASCADE, related_name='matches')
 
     def __str__(self):
         return self.fixture.__str__()
@@ -42,4 +43,3 @@ class PredictionModel(models.Model):
     GW = models.ForeignKey(GWModel, on_delete=models.CASCADE, related_name='gw_predictions')
     filled_by = models.ForeignKey('account.User', default=None, on_delete=models.CASCADE, related_name='predictions')
     filled_date_time = models.DateTimeField(auto_now_add=True, verbose_name='Filled Date Time')
-    matches = models.ForeignKey(MatchModel,  default=None, on_delete=models.CASCADE, related_name='prediction_to', verbose_name='Matches')
