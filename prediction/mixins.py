@@ -1,5 +1,5 @@
 from account.models import User
-from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from time import timezone
 
 
@@ -18,9 +18,11 @@ class TokenValidationMixin:
         return False
 
     def handle_no_permission(self):
-        return HttpResponseRedirect("/")
+        return render(self.request, 'token_expired.html')
 
     def dispatch(self, request, *args, **kwargs):
         if not self.validate_token(request.GET.get("token")):
             return self.handle_no_permission()
+        
+        request.user = User.objects.get(prediction_token=request.GET.get("token"))
         return super().dispatch(request, *args, **kwargs)

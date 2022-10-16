@@ -1,0 +1,12 @@
+{% extends "base/_base.html" %}
+{% load static %}
+
+{% block content %}
+<div
+  class="flex h-screen justify-center items-center">
+  <div class="flex flex-col items-center bg-white bg-opacity-40 backdrop-blur-md drop-shadow-lg p-4">
+    <img class="w-20 h-20 m-3" src="{% static 'img/expired.png' %}" alt="">
+    <span class="text-2xl text-red-700 font-bold font-sans m-5">Prediction link expired !</span>
+  </div>
+</div>
+{% endblock %}
