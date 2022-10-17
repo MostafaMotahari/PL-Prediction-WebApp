@@ -1,5 +1,5 @@
-from urllib import response
-from prediction.models import GWModel, FixtureModel, TeamModel, MatchModel, PredictionModel
+from prediction.models import GWModel, FixtureModel, TeamModel
+from apscheduler.schedulers.background import BackgroundScheduler
 import requests
 
 # Static variables
@@ -12,8 +12,8 @@ def need_update_and_calculate():
 
     response = requests.get(BASE_API_URL + "bootstrap-static/", headers=HEADERS).json()
 
-    if response["events"][latest_gw.id - 1]["is_finished"]:
-        latest_gw.is_finished = True
+    if response["events"][latest_gw.GW_number - 1]["finished"]:
+        latest_gw.finished = True
         latest_gw.save()
         return True
     return False
@@ -48,6 +48,9 @@ def update_fixtures():
 def calculate_points():
     latest_gw = GWModel.objects.latest("id")
     predictions = latest_gw.gw_predictions.all()
+
+    if not predictions:
+        return
     response = requests.get(BASE_API_URL + "fixtures/", headers=HEADERS).json()
 
     for prediction in predictions:
@@ -84,3 +87,9 @@ def updater_and_calculator():
         update_fixtures()
         return True
     return False
+
+
+def start_updater_job():
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(updater_and_calculator, "interval", minutes=1)
+    scheduler.start()

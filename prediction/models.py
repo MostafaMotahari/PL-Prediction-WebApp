@@ -5,7 +5,7 @@ from django.db import models
 class GWModel(models.Model):
     GW_number = models.IntegerField()
     deadline = models.DateTimeField()
-    is_finished = models.BooleanField(default=False)
+    finished = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Gameweek {self.GW_number}"
