@@ -5,6 +5,7 @@ from django.db import models
 class GWModel(models.Model):
     GW_number = models.IntegerField()
     deadline = models.DateTimeField()
+    is_finished = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Gameweek {self.GW_number}"
@@ -20,6 +21,7 @@ class TeamModel(models.Model):
 
 class FixtureModel(models.Model):
     GW = models.ForeignKey(GWModel, on_delete=models.CASCADE , verbose_name='Gameweek', related_name='fixtures')
+    fixture_code = models.IntegerField(default=0, verbose_name='Fixture Code')
     home_team = models.ForeignKey(TeamModel, on_delete=models.CASCADE, related_name='home_team')
     away_team = models.ForeignKey(TeamModel, on_delete=models.CASCADE, related_name='away_team')
     kickoff_time = models.DateTimeField(null=True)
@@ -43,3 +45,4 @@ class PredictionModel(models.Model):
     GW = models.ForeignKey(GWModel, on_delete=models.CASCADE, related_name='gw_predictions')
     filled_by = models.ForeignKey('account.User', default=None, on_delete=models.CASCADE, related_name='predictions')
     filled_date_time = models.DateTimeField(auto_now_add=True, verbose_name='Filled Date Time')
+    achieved_points = models.IntegerField(default=0, verbose_name='Achieved Points')
