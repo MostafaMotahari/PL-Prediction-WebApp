@@ -44,7 +44,7 @@ module.exports = {
     theme: {
         extend: {
             backgroundImage: {
-                'repeated-hexagon': "url('https://upcdn.io/W142hJk/raw/demo/7zPZ8cq.jpg')",
+                'repeated-hexagon': "url('/static/img/repeated-hexagon.jpg')",
             },
             colors: {
                 'greenBlue': '#015770'
