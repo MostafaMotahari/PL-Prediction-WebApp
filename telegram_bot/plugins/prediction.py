@@ -1,4 +1,5 @@
 from account.models import User
+from config.settings import ALLOWED_HOSTS
 from django.utils import timezone
 from pyrogram import filters
 from pyrogram.client import Client
@@ -26,7 +27,7 @@ def prediction_menu(client: Client, message: Message):
                 reply_markup=InlineKeyboardMarkup([
                     [InlineKeyboardButton(
                         text="🔗 Prediction Token 🔗",
-                        url=f"http://127.0.0.1:8000/prediction/{prediction_token}"
+                        url=f"http://{ALLOWED_HOSTS[0]}/prediction/{prediction_token}"
                     )]
                 ])
             )
