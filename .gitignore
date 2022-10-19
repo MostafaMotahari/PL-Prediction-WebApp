@@ -131,3 +131,7 @@ dmypy.json
 # Pyrogram bots
 *.session-journal
 *.session
+
+# Django user files
+media/
+static/

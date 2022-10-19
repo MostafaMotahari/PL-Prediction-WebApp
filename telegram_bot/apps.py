@@ -6,5 +6,5 @@ class TelegramBotConfig(AppConfig):
     name = 'telegram_bot'
 
     def ready(self):
-        from .plugins import fixtures_updater
-        fixtures_updater.start_updater_job()
+        from . import updater_cron
+        updater_cron.start_updater_job()
