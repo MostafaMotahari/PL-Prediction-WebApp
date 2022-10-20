@@ -46,7 +46,7 @@ def settings(client: Client, message: Message):
         ),
         reply_markup=inline_keyboard_maker(
             "power_off" if config("BOT_POWER_MODE") == "ON" else "power_on",
-            "prediction_off" if config("BOT_PREDICTION_MODE") == "OFF" else "prediction_on",
+            "prediction_off" if config("BOT_PREDICTION_MODE") == "ON" else "prediction_on",
         )  
     )
 
@@ -70,7 +70,7 @@ def power_mode(client: Client, callback_query):
         ),
         reply_markup=inline_keyboard_maker(
             "power_off" if config("BOT_POWER_MODE") == "ON" else "power_on",
-            "prediction_off" if config("BOT_PREDICTION_MODE") == "OFF" else "prediction_on",
+            "prediction_off" if config("BOT_PREDICTION_MODE") == "ON" else "prediction_on",
         )
     )
 
@@ -95,6 +95,6 @@ def prediction_mode(client: Client, callback_query):
         ),
         reply_markup=inline_keyboard_maker(
             "power_off" if config("BOT_POWER_MODE") == "ON" else "power_on",
-            "prediction_off" if config("BOT_PREDICTION_MODE") == "OFF" else "prediction_on",
+            "prediction_off" if config("BOT_PREDICTION_MODE") == "ON" else "prediction_on",
         )
     )
