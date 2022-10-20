@@ -1,5 +1,4 @@
 from account.models import User
-from prediction.models import GWModel, Prediction
 from config.settings import ALLOWED_HOSTS
 from django.utils import timezone
 from pyrogram import filters
