@@ -37,7 +37,7 @@ def prediction_menu(client: Client, message: Message):
 
             else:
                 message.reply_text(
-                    "You predicted this week's fixtures."
+                    "🫠 You have already predicted this week's fixtures."
                 )
 
                 return 0

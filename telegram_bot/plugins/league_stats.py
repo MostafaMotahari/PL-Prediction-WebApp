@@ -71,7 +71,7 @@ def league_help(client: Client, message: Message):
     message.reply_text(
         "🏆 **League Stats**\n\n"
         "➕ To get the default league stats, use the following command:\n"
-        "`/leagues`\n\n"
+        "📝 `/leagues`\n\n"
         "➕ To get the custom league stats, use the following command:\n"
         "📝 `/leagues <league_id>` - Get league standings\n"
     )
