@@ -91,5 +91,5 @@ def updater_and_calculator():
 
 def start_updater_job():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(updater_and_calculator, "interval", minutes=1)
+    scheduler.add_job(updater_and_calculator, "interval", hours=24)
     scheduler.start()

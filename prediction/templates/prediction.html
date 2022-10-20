@@ -17,7 +17,7 @@
       
       {% for fixture, form in fixtures|zip:formset %}
 
-      {% render_field form.fixture_id value=fixture.id %}
+      {% render_field form.fixture_id value=fixture.id name='fixture_id' %}
       
       <div class="flex flex-row justify-center items-center bg-white bg-opacity-40 backdrop-blur-md rounded-xl drop-shadow-lg my-3 p-4 space-x-2 lg:space-x-4 font-['Ubuntu']">
         <div class="flex flex-col items-center">
