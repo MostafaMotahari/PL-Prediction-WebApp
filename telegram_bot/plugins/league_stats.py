@@ -65,6 +65,17 @@ def league_scraper(message: Message, league_id: int, standing_page: int = 1):
         reply_markup=InlineKeyboardMarkup(inline_keyboard) if len(inline_keyboard[0]) > 0 else None
     )
 
+# Send league stats commands helping text
+@Client.on_message(filters.private & filters.regex("^📊 Stats$"))
+def league_help(client: Client, message: Message):
+    message.reply_text(
+        "🏆 **League Stats**\n\n"
+        "➕ To get the default league stats, use the following command:\n"
+        "`/leagues`\n\n"
+        "➕ To get the custom league stats, use the following command:\n"
+        "📝 `/leagues <league_id>` - Get league standings\n"
+    )
+
 # Choosing a league to scrap
 @Client.on_message(power_mode_filter & banned_filter & \
     filters.private & filters.command(["leagues"]))
