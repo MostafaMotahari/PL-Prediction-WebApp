@@ -1,3 +1,4 @@
+from telegram_bot.models import LeagueModel, LoadingModel
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
@@ -80,23 +81,24 @@ def league_help(client: Client, message: Message):
 @Client.on_message(power_mode_filter & banned_filter & \
     filters.private & filters.command(["leagues"]))
 def send_leagues(client: Client, message: Message):
+    loading_message = LoadingModel.objects.first()
 
     if len(message.text.split(" ")) == 1:
-        leagues = config("LEAGUES_ID", cast=lambda v: [s.strip() for s in v.split(',')])
+        leagues = LeagueModel.objects.all()
 
         client.send_animation(
             chat_id=message.chat.id,
-            animation="src/static/loading_gif.gif",
-            caption="Please choose one of the following leagues:\n\n",
+            animation=loading_message.video.url,
+            caption=loading_message.text,
             reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton(league.split("-")[0], callback_data=league.split("-")[1])] for league in leagues
+                [InlineKeyboardButton(league.name, callback_data=league.code)] for league in leagues
             ])
         )
 
     elif len(message.text.split(" ")) == 2:
         table_message = client.send_animation(
             chat_id=message.chat.id,
-            animation="src/static/loading_gif.gif",
+            animation=loading_message.video.url,
             caption="Please Wait..."
         )
         league_scraper(table_message, int(message.text.split(" ")[1]))
