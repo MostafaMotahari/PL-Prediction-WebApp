@@ -134,4 +134,3 @@ dmypy.json
 
 # Django user files
 media/
-static/
