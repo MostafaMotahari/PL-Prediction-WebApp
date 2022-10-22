@@ -87,7 +87,7 @@ def send_leagues(client: Client, message: Message):
 
         client.send_animation(
             chat_id=message.chat.id,
-            animation=BASE_DIR / loading_message.video.url,
+            animation=loading_message.video,
             caption=loading_message.text,
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton(league.name, callback_data=league.code)] for league in leagues
