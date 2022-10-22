@@ -46,3 +46,6 @@ class PredictionModel(models.Model):
     filled_by = models.ForeignKey('account.User', default=None, on_delete=models.CASCADE, related_name='predictions')
     filled_date_time = models.DateTimeField(auto_now_add=True, verbose_name='Filled Date Time')
     achieved_points = models.IntegerField(default=0, verbose_name='Achieved Points')
+
+    def __str__(self):
+        return f'{self.filled_by.username} - {self.GW}'

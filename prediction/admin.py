@@ -15,7 +15,7 @@ class MatchAdmin(admin.ModelAdmin):
     list_display = ('GW', 'fixture', 'team1_score', 'team2_score')
 
 class PredictionAdmin(admin.ModelAdmin):
-    list_display = ('GW', 'filled_date_time')
+    list_display = ('GW', 'filled_by', 'filled_date_time')
 
 
 admin.site.register(GWModel, GWAdmin)
