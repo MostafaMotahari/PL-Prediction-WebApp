@@ -1,6 +1,7 @@
 from prediction.models import GWModel, FixtureModel, TeamModel
 from apscheduler.schedulers.background import BackgroundScheduler
 import requests
+from datetime import datetime
 
 # Static variables
 BASE_API_URL = "https://fantasy.premierleague.com/api/"
@@ -85,11 +86,12 @@ def updater_and_calculator():
     if need_update_and_calculate():
         calculate_points()
         update_fixtures()
+        open("cron.log", "a").write("Cronjob ran successfully at " + str(datetime.now()) + "\n")
         return True
     return False
 
 
 def start_updater_job():
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(updater_and_calculator, "interval", hours=24)
+    scheduler = BackgroundScheduler(timezone="Asia/Tehran")
+    scheduler.add_job(updater_and_calculator, "cron", hour=0, minute=0)
     scheduler.start()
