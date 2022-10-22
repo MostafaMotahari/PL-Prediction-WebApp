@@ -1,4 +1,4 @@
-from telegram_bot.models import LeagueModel, LoadingModel
+from telegram_bot.models import LeagueModel, TemplatesMediaModel
 import requests
 import os
 from PIL import Image, ImageDraw, ImageFont
@@ -35,12 +35,12 @@ def league_scraper(message: Message, league_id: int, standing_page: int = 1):
         ])
 
     # Make the league table image
-    image = Image.open("src/static/table_bg.jpg")
+    image = Image.open(os.getcwd() + TemplatesMediaModel.objects.first().league_stats_bg.url)
     # image = Image.new("RGB", (600, (len(classic_league["results"]) * 15) + 200), "white")
     draw = ImageDraw.Draw(image)
     font = ImageFont.truetype("src/static/cour.ttf", 20)
     draw.text((36, 20), str(standings_table), font=font, fill="black")
-    image.save("src/static/standings.png") # Saving the created image
+    image.save(os.getcwd() +  "/media/images/standings.png") # Saving the created image
 
     # Inline Keyboard
     inline_keyboard = [[]]
@@ -54,7 +54,7 @@ def league_scraper(message: Message, league_id: int, standing_page: int = 1):
     # Send the league state as new message
     message.edit_media(
         media=InputMediaPhoto(
-            media="src/static/standings.png",
+            media=os.getcwd() +  "/media/images/standings.png",
 
             caption=f"🏆 **{classic_league['league']['name']} Standings**\n"
             f"➕ Created Date: {classic_league['league']['created']}\n"
@@ -80,15 +80,15 @@ def league_help(client: Client, message: Message):
 @Client.on_message(power_mode_filter & banned_filter & \
     filters.private & filters.command(["leagues"]))
 def send_leagues(client: Client, message: Message):
-    loading_message = LoadingModel.objects.first()
+    loading_message = TemplatesMediaModel.objects.first()
 
     if len(message.text.split(" ")) == 1:
         leagues = LeagueModel.objects.all()
 
         client.send_animation(
             chat_id=message.chat.id,
-            animation=os.getcwd() + loading_message.video.url,
-            caption=loading_message.text,
+            animation=os.getcwd() + loading_message.loading_video.url,
+            caption=loading_message.loading_text,
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton(league.name, callback_data=league.code)] for league in leagues
             ])
@@ -97,7 +97,7 @@ def send_leagues(client: Client, message: Message):
     elif len(message.text.split(" ")) == 2:
         table_message = client.send_animation(
             chat_id=message.chat.id,
-            animation=os.getcwd() + loading_message.video.url,
+            animation=os.getcwd() + loading_message.loading_video.url,
             caption="Please Wait..."
         )
         league_scraper(table_message, int(message.text.split(" ")[1]))

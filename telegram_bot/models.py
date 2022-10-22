@@ -8,9 +8,8 @@ class LeagueModel(models.Model):
     def __str__(self):
         return self.name
 
-class LoadingModel(models.Model):
-    video = models.FileField(upload_to="videos")
-    text = models.CharField(max_length=255)
-
-    def __str__(self):
-        return "Loading Message"
+class TemplatesMediaModel(models.Model):
+    loading_video = models.FileField(upload_to="videos/")
+    loading_text = models.TextField()
+    league_stats_bg = models.FileField(upload_to="images/")
+    captain_stats_bg = models.FileField(upload_to="images/")

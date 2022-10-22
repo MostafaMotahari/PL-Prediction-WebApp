@@ -1,7 +1,7 @@
-from .models import LeagueModel, LoadingModel
+from .models import LeagueModel, TemplatesMediaModel
 from django.contrib import admin
 
 # Register your models here.
 admin.site.register(LeagueModel)
-admin.site.register(LoadingModel)
+admin.site.register(TemplatesMediaModel)
 
