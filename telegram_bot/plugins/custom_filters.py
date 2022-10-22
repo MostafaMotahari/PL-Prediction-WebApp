@@ -19,7 +19,7 @@ admin_filter = filters.create(admin_filter)
 
 def banned_filter(_, __, message):
     try:
-        return True if User.objects.get(telegram_id=message.from_user.id).status == "banned" else False
+        return False if User.objects.get(telegram_id=message.from_user.id).status == "banned" else True
     except:
         return False
 

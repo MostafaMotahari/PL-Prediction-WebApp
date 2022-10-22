@@ -1,8 +1,7 @@
 from telegram_bot.models import LeagueModel, LoadingModel
+from config.settings import BASE_DIR
 import requests
 from PIL import Image, ImageDraw, ImageFont
-
-from decouple import config
 from pyrogram import filters
 from pyrogram.client import Client
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, InputMediaPhoto
@@ -88,7 +87,7 @@ def send_leagues(client: Client, message: Message):
 
         client.send_animation(
             chat_id=message.chat.id,
-            animation=loading_message.video.url,
+            animation=BASE_DIR / loading_message.video.url,
             caption=loading_message.text,
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton(league.name, callback_data=league.code)] for league in leagues
@@ -98,7 +97,7 @@ def send_leagues(client: Client, message: Message):
     elif len(message.text.split(" ")) == 2:
         table_message = client.send_animation(
             chat_id=message.chat.id,
-            animation=loading_message.video.url,
+            animation=BASE_DIR / loading_message.video.url,
             caption="Please Wait..."
         )
         league_scraper(table_message, int(message.text.split(" ")[1]))
