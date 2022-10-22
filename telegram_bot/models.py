@@ -13,3 +13,7 @@ class TemplatesMediaModel(models.Model):
     loading_text = models.TextField()
     league_stats_bg = models.FileField(upload_to="images/")
     captain_stats_bg = models.FileField(upload_to="images/")
+    text_font = models.FileField(upload_to="files/" ,default="files/Roboto-Regular.ttf")
+
+    def __str__(self):
+        return "Loading Media"

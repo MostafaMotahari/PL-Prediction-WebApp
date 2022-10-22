@@ -35,10 +35,11 @@ def league_scraper(message: Message, league_id: int, standing_page: int = 1):
         ])
 
     # Make the league table image
-    image = Image.open(os.getcwd() + TemplatesMediaModel.objects.first().league_stats_bg.url)
+    template_model = TemplatesMediaModel.objects.first()
+    image = Image.open(os.getcwd() + template_model.league_stats_bg.url)
     # image = Image.new("RGB", (600, (len(classic_league["results"]) * 15) + 200), "white")
     draw = ImageDraw.Draw(image)
-    font = ImageFont.truetype("src/static/cour.ttf", 20)
+    font = ImageFont.truetype(os.getcwd() + template_model.text_font.url, 20)
     draw.text((36, 20), str(standings_table), font=font, fill="black")
     image.save(os.getcwd() +  "/media/images/standings.png") # Saving the created image
 
