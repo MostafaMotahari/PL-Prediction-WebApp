@@ -44,7 +44,7 @@ module.exports = {
     theme: {
         extend: {
             backgroundImage: {
-                'repeated-hexagon': "url('/static/img/blue-gradient.jpg')",
+                'blue-pl': "url('/static/img/blue-gradient.jpg')",
             },
             colors: {
                 'greenBlue': '#015770'
