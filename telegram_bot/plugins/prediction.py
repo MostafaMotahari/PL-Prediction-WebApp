@@ -17,14 +17,14 @@ def prediction_menu(client: Client, message: Message):
         gameweek = GWModel.objects.get(enabled=True)
         if gameweek.deadline - timedelta(minutes=30) < timezone.now():
             message.reply_text(
-                "No prediction available at the moment."
-                "Becareful, you can't submit your prediction after the deadline."
+                "☠️ No prediction available at the moment.\n"
+                "Becareful, you can't submit your prediction after the deadline.\n"
                 "Please wait for the next gameweek."
             )
             return
     except GWModel.DoesNotExist:
         message.reply_text(
-            "No prediction available at the moment."
+            "🚫 No prediction available at the moment.\n"
             "Please wait until admin create the next gameweek."
         )
         return
