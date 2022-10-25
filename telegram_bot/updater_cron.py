@@ -90,6 +90,10 @@ def calculate_points():
 
 
 def start_updater_job():
+    job_defaults = {
+        'coalesce': False,
+        'max_instances': 2
+    }
     scheduler = BackgroundScheduler(timezone="Asia/Tehran")
     scheduler.add_job(calculate_points, "cron", hour=0, minute=0)
     scheduler.add_job(disable_gw_after_deadline, "interval", hours=1)
