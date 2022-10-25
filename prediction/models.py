@@ -1,3 +1,4 @@
+from cgitb import enable
 from email.policy import default
 from django.db import models
 
@@ -6,6 +7,7 @@ class GWModel(models.Model):
     GW_number = models.IntegerField()
     deadline = models.DateTimeField()
     finished = models.BooleanField(default=False)
+    enabled = models.BooleanField(default=True)
 
     def __str__(self):
         return f"Gameweek {self.GW_number}"

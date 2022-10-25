@@ -7,18 +7,12 @@ from datetime import datetime
 BASE_API_URL = "https://fantasy.premierleague.com/api/"
 HEADERS = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:88.0) Gecko/20100101 Firefox/88.0"}
 
-def need_update_and_calculate():
-    try: latest_gw = GWModel.objects.latest("id") 
-    except: return None
 
-    response = requests.get(BASE_API_URL + "bootstrap-static/", headers=HEADERS).json()
-
-    if response["events"][latest_gw.GW_number - 1]["finished"]:
-        latest_gw.finished = True
+def disable_gw_after_deadline():
+    latest_gw = GWModel.objects.latest("id")
+    if latest_gw.enabled and latest_gw.deadline < datetime.now():
+        latest_gw.enabled = False
         latest_gw.save()
-        return True
-    return False
-
 
 def update_fixtures():
     # Create next GW object
@@ -48,6 +42,12 @@ def update_fixtures():
 
 def calculate_points():
     latest_gw = GWModel.objects.latest("id")
+
+    response = requests.get(BASE_API_URL + "bootstrap-static/", headers=HEADERS).json()
+
+    if not response["events"][latest_gw.GW_number - 1]["finished"] or latest_gw.finished:
+        return
+
     predictions = latest_gw.gw_predictions.all()
 
     if not predictions:
@@ -79,19 +79,16 @@ def calculate_points():
         prediction.filled_by.total_prediction_points += prediction.achieved_points
         prediction.filled_by.save()
 
-    return True
-                    
+    latest_gw.finished = True
+    latest_gw.save()
 
-def updater_and_calculator():
-    if need_update_and_calculate():
-        calculate_points()
-        update_fixtures()
-        open("cron.log", "a").write("Cronjob ran successfully at " + str(datetime.now()) + "\n")
-        return True
-    return False
+    update_fixtures()
+
+    return True
 
 
 def start_updater_job():
     scheduler = BackgroundScheduler(timezone="Asia/Tehran")
-    scheduler.add_job(updater_and_calculator, "cron", hour=0, minute=0)
+    scheduler.add_job(calculate_points, "cron", hour=0, minute=0)
+    scheduler.add_job(disable_gw_after_deadline, "interval", hours=1)
     scheduler.start()
