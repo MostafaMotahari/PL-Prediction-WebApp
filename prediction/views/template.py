@@ -1,3 +1,4 @@
+from cgitb import enable
 from django.views.generic.edit import FormView
 from django.shortcuts import render
 from django.utils import timezone
@@ -15,7 +16,7 @@ class PredictionView(TokenValidationMixin, FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        latest_gw = GWModel.objects.latest('id')
+        latest_gw = GWModel.objects.get(enabled=True)
         context['game_week'] = latest_gw
         context['fixtures'] = FixtureModel.objects.filter(GW=latest_gw)
         context['formset'] = MatchFormSet()

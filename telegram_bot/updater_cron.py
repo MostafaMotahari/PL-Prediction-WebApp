@@ -84,6 +84,8 @@ def calculate_points():
 
     update_fixtures()
 
+    open("cron.log", 'a').write("Cron job executed at " + str(datetime.now()) + ".\n")
+
     return True
 
 

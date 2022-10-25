@@ -1,6 +1,8 @@
+from datetime import timedelta
 from account.models import User
-from config.settings import ALLOWED_HOSTS
+from prediction.models import GWModel
 from django.utils import timezone
+from config.settings import ALLOWED_HOSTS
 from pyrogram import filters
 from pyrogram.client import Client
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
@@ -10,6 +12,15 @@ import secrets
 
 @Client.on_message(filters.private & filters.regex("^⚽️ Predictions 🎲$"))
 def prediction_menu(client: Client, message: Message):
+    gameweek = GWModel.objects.get(enabled=True)
+    if not gameweek or gameweek.deadline - timedelta(minutes=30) < timezone.now():
+        message.reply_text(
+            "No prediction available at the moment."
+            "It may be because the deadline has passed or the prediction is not yet available."
+            "Please wait and try again later."
+        )
+        return
+
     user = User.objects.get(telegram_id=message.from_user.id)
 
     if config("BOT_PREDICTION_MODE") == "ON":
