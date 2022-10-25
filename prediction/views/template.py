@@ -16,6 +16,7 @@ class PredictionView(TokenValidationMixin, FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # Note that the deadline is 30 minutes before the actual deadline and it controlled in telegram_bot/plugins/prediction.py
         latest_gw = GWModel.objects.get(enabled=True)
         context['game_week'] = latest_gw
         context['fixtures'] = FixtureModel.objects.filter(GW=latest_gw)

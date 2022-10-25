@@ -12,6 +12,7 @@ import secrets
 
 @Client.on_message(filters.private & filters.regex("^⚽️ Predictions 🎲$"))
 def prediction_menu(client: Client, message: Message):
+    # Control deadline
     gameweek = GWModel.objects.get(enabled=True)
     if not gameweek or gameweek.deadline - timedelta(minutes=30) < timezone.now():
         message.reply_text(
