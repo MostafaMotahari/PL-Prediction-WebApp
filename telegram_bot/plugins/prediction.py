@@ -13,12 +13,19 @@ import secrets
 @Client.on_message(filters.private & filters.regex("^⚽️ Predictions 🎲$"))
 def prediction_menu(client: Client, message: Message):
     # Control deadline
-    gameweek = GWModel.objects.get(enabled=True)
-    if not gameweek or gameweek.deadline - timedelta(minutes=30) < timezone.now():
+    try:
+        gameweek = GWModel.objects.get(enabled=True)
+        if gameweek.deadline - timedelta(minutes=30) < timezone.now():
+            message.reply_text(
+                "No prediction available at the moment."
+                "Becareful, you can't submit your prediction after the deadline."
+                "Please wait for the next gameweek."
+            )
+            return
+    except GWModel.DoesNotExist:
         message.reply_text(
             "No prediction available at the moment."
-            "It may be because the deadline has passed or the prediction is not yet available."
-            "Please wait and try again later."
+            "Please wait until admin create the next gameweek."
         )
         return
 
