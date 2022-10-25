@@ -94,7 +94,7 @@ def start_updater_job():
         'coalesce': False,
         'max_instances': 2
     }
-    scheduler = BackgroundScheduler(timezone="Asia/Tehran")
+    scheduler = BackgroundScheduler(job_defaults=job_defaults, timezone="Asia/Tehran")
     scheduler.add_job(calculate_points, "cron", hour=0, minute=0)
     scheduler.add_job(disable_gw_after_deadline, "interval", hours=1)
     scheduler.start()
