@@ -1,5 +1,6 @@
 from prediction.models import GWModel, FixtureModel, TeamModel
 from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 import requests
 from datetime import datetime
 
@@ -94,7 +95,10 @@ def start_updater_job():
         'coalesce': False,
         'max_instances': 2
     }
-    scheduler = BackgroundScheduler(job_defaults=job_defaults, timezone="Asia/Tehran")
+    jobstores = {
+        'default': SQLAlchemyJobStore(url='sqlite:///cron_tasks.sqlite')
+    }
+    scheduler = BackgroundScheduler(jobstores=jobstores, job_defaults=job_defaults, timezone="Asia/Tehran")
     scheduler.add_job(calculate_points, "cron", hour=0, minute=0)
     scheduler.add_job(disable_gw_after_deadline, "interval", hours=1)
     scheduler.start()
