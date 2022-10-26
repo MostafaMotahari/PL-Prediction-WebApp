@@ -91,14 +91,7 @@ def calculate_points():
 
 
 def start_updater_job():
-    job_defaults = {
-        'coalesce': False,
-        'max_instances': 2
-    }
-    jobstores = {
-        'default': SQLAlchemyJobStore(url='sqlite:///cron_tasks.sqlite')
-    }
-    scheduler = BackgroundScheduler(jobstores=jobstores, job_defaults=job_defaults, timezone="Asia/Tehran")
+    scheduler = BackgroundScheduler(timezone="Asia/Tehran")
     scheduler.add_job(calculate_points, "cron", hour=0, minute=0)
     scheduler.add_job(disable_gw_after_deadline, "interval", hours=1)
     scheduler.start()
