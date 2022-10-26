@@ -7,4 +7,4 @@ class TelegramBotConfig(AppConfig):
 
     def ready(self):
         from . import updater_cron
-        updater_cron.start_updater_job()
+        # updater_cron.start_updater_job()
