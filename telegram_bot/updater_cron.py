@@ -1,8 +1,7 @@
 from prediction.models import GWModel, FixtureModel, TeamModel
+from django.utils import timezone
 from apscheduler.schedulers.background import BackgroundScheduler
-from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 import requests
-from datetime import datetime
 
 # Static variables
 BASE_API_URL = "https://fantasy.premierleague.com/api/"
@@ -11,7 +10,7 @@ HEADERS = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:88.0) Gecko/2010010
 
 def disable_gw_after_deadline():
     latest_gw = GWModel.objects.latest("id")
-    if latest_gw.enabled and latest_gw.deadline < datetime.now():
+    if latest_gw.enabled and latest_gw.deadline < timezone.now():
         latest_gw.enabled = False
         latest_gw.save()
 
@@ -84,8 +83,6 @@ def calculate_points():
     latest_gw.save()
 
     update_fixtures()
-
-    open("cron.log", 'a').write("Cron job executed at " + str(datetime.now()) + ".\n")
 
     return True
 
