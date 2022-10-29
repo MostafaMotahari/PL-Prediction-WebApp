@@ -20,26 +20,27 @@ def banned_filter(_, __, message):
     try:
         user = User.objects.get(telegram_id=message.from_user.id)
         # Check if the user is a member of the main channel
-        for member in _.get_chat_members(config("MAIN_CHANNEL")):
+        for member in __.get_chat_members(config("MAIN_CHANNEL")):
             if member.user.id == user.telegram_id:
                 if user.status == "banned":
                     user.status = "user"
-                break
-        else:
-            message.reply_text(
-                "You are not a member of the main channel. Please join the main channel and try again.",
-                reply_markup=InlineKeyboardMarkup(
-                    [[
-                        InlineKeyboardButton("Join Channel", url=f"https://t.me/{config('MAIN_CHANNEL')}"),
-                    ],[
-                        InlineKeyboardButton("Confirm", url="https://t.me/PLPredictionBot?start")
-                    ]]
-                )
+                    user.save()
+                return True
+
+        message.reply_text(
+            "You are not a member of the main channel. Please join the main channel and try again.",
+            reply_markup=InlineKeyboardMarkup(
+                [[
+                    InlineKeyboardButton("Join Channel", url=f"https://t.me/{config('MAIN_CHANNEL')}"),
+                ],[
+                    InlineKeyboardButton("Confirm", url="https://t.me/PLPredictionBot?start")
+                ]]
             )
-            user.status = "banned"
-        
+        )
+        user.status = "banned"
         user.save()
-        return False if user.status == "banned" else True
+        return False
+        
     except:
         return False
 
