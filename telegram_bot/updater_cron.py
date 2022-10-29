@@ -1,3 +1,4 @@
+from account.models import User
 from prediction.models import GWModel, FixtureModel, TeamModel
 from django.utils import timezone
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -13,6 +14,10 @@ def disable_gw_after_deadline():
     if latest_gw.enabled and latest_gw.deadline < timezone.now():
         latest_gw.enabled = False
         latest_gw.save()
+
+    for user in User.objects.all():
+        user.weekly_prediction_points = 0
+        user.save()
 
 def update_fixtures():
     # Create next GW object

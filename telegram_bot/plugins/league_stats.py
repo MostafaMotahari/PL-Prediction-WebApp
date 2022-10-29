@@ -67,7 +67,7 @@ def league_scraper(message: Message, league_id: int, standing_page: int = 1):
     )
 
 # Send league stats commands helping text
-@Client.on_message(filters.private & filters.regex("^📊 Stats$"))
+@Client.on_message(filters.private & (filters.regex("^📊 Stats$") | filters.regex("^/help$")) & banned_filter)
 def league_help(client: Client, message: Message):
     message.reply_text(
         "🏆 **League Stats**\n\n"

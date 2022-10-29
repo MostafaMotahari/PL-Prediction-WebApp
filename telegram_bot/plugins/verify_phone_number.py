@@ -3,8 +3,11 @@ from pyrogram import filters
 from pyrogram.client import Client
 from pyrogram.types import Message
 
+from telegram_bot.plugins.custom_filters import banned_filter, power_mode_filter
+
 # ToDo: add an option to change country code from env file or settings.
-@Client.on_message(filters.private & filters.contact)
+@Client.on_message(filters.private & filters.contact \
+    & banned_filter & power_mode_filter)
 def verify_phone_number(client: Client, message: Message):
 
     user = User.objects.get(telegram_id=message.from_user.id)

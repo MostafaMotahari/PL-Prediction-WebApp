@@ -9,8 +9,11 @@ from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from decouple import config
 import secrets
 
+from telegram_bot.plugins.custom_filters import banned_filter, power_mode_filter
 
-@Client.on_message(filters.private & filters.regex("^⚽️ Predictions 🎲$"))
+
+@Client.on_message(filters.private & filters.regex("^⚽️ Predictions 🎲$") \
+    & banned_filter & power_mode_filter)
 def prediction_menu(client: Client, message: Message):
     # Control deadline
     try:
