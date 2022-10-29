@@ -2,7 +2,6 @@ from account.models import User
 from pyrogram import filters
 from pyrogram.client import Client
 from pyrogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
-from decouple import config
 
 
 @Client.on_message(filters.private & filters.command(["start"]))

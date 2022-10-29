@@ -30,7 +30,9 @@ def banned_filter(_, __, message):
                 "You are not a member of the main channel. Please join the main channel and try again.",
                 reply_markup=InlineKeyboardMarkup(
                     [[
-                        InlineKeyboardButton("Join Channel", url="https://t.me/your_channel")
+                        InlineKeyboardButton("Join Channel", url=f"https://t.me/{config('MAIN_CHANNEL')}"),
+                    ],[
+                        InlineKeyboardButton("Confirm", url="https://t.me/PLPredictionBot?start")
                     ]]
                 )
             )
