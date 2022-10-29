@@ -19,14 +19,14 @@ admin_filter = filters.create(admin_filter)
 def banned_filter(_, __, message):
     try:
         user = User.objects.get(telegram_id=message.from_user.id)
-        # Check if the user is a member of the main channel
-        for member in __.get_chat_members(config("MAIN_CHANNEL")):
-            if member.user.id == int(user.telegram_id):
-                if user.status == "banned":
-                    user.status = "user"
-                    user.save()
-                return True
 
+        if __.get_chat_member(config("MAIN_CHANNEL"), message.from_user.id):
+            if user.status == "banned":
+                user.status = "user"
+                user.save()
+            
+            return True
+        
         message.reply_text(
             "You are not a member of the main channel. Please join the main channel and try again.",
             reply_markup=InlineKeyboardMarkup(
@@ -41,7 +41,7 @@ def banned_filter(_, __, message):
         user.save()
         return False
         
-    except:
+    except :
         return False
 
 banned_filter = filters.create(banned_filter)
