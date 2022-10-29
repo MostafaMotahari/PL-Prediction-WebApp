@@ -1,6 +1,7 @@
 from account.models import User
 from pyrogram import filters
-from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.errors import UserNotParticipant
 from decouple import config
 
 
@@ -27,6 +28,7 @@ def banned_filter(_, __, message):
             
             return True
         
+    except UserNotParticipant:
         message.reply_text(
             "You are not a member of the main channel. Please join the main channel and try again.",
             reply_markup=InlineKeyboardMarkup(
@@ -41,7 +43,11 @@ def banned_filter(_, __, message):
         user.save()
         return False
         
-    except :
+    except user.DoesNotExist:
+        return False
+
+    except Exception as e:
+        print(e)
         return False
 
 banned_filter = filters.create(banned_filter)
