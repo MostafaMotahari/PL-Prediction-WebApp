@@ -15,9 +15,9 @@ def disable_gw_after_deadline():
         latest_gw.enabled = False
         latest_gw.save()
 
-    for user in User.objects.all():
-        user.weekly_prediction_points = 0
-        user.save()
+        for user in User.objects.all():
+            user.weekly_prediction_points = 0
+            user.save()
 
 def update_fixtures():
     # Create next GW object
