@@ -7,7 +7,7 @@ from telegram_bot.plugins.custom_filters import banned_filter, power_mode_filter
 
 
 @Client.on_message(filters.private & filters.regex("^👤 Profile$") \
-    & banned_filter & power_mode_filter)
+    & power_mode_filter & banned_filter)
 def profile(client: Client, message: Message):
     user = User.objects.get(telegram_id=message.from_user.id)
 

@@ -67,7 +67,8 @@ def league_scraper(message: Message, league_id: int, standing_page: int = 1):
     )
 
 # Send league stats commands helping text
-@Client.on_message(filters.private & (filters.regex("^📊 Stats$") | filters.regex("^/help$")) & banned_filter)
+@Client.on_message(filters.private & (filters.regex("^📊 Stats$") | filters.regex("^/help$")) \
+    & power_mode_filter & banned_filter)
 def league_help(client: Client, message: Message):
     message.reply_text(
         "🏆 **League Stats**\n\n"
@@ -78,8 +79,8 @@ def league_help(client: Client, message: Message):
     )
 
 # Choosing a league to scrap
-@Client.on_message(power_mode_filter & banned_filter & \
-    filters.private & filters.command(["leagues"]))
+@Client.on_message(filters.private & filters.command(["leagues"]) & \
+    power_mode_filter & banned_filter)
 def send_leagues(client: Client, message: Message):
     loading_message = TemplatesMediaModel.objects.first()
 
@@ -108,7 +109,7 @@ def send_leagues(client: Client, message: Message):
 
 
 # Main function that gets league data from fpl api and sort it
-@Client.on_callback_query(power_mode_filter & banned_filter & filters.regex("^[0-9]+"))
+@Client.on_callback_query(filters.regex("^[0-9]+") & power_mode_filter & banned_filter)
 def get_league_state(client: Client, callback_query: CallbackQuery):
 
     league_id = int(callback_query.data.split(":")[0])
