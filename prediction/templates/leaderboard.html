@@ -40,13 +40,13 @@
     <!-- Pagination Section -->
     <div class="flex flex-row items-center justify-center mt-3 font-['Ubuntu'] font-bold text-sm text-white">
       {% if page_obj.has_previous %}
-      <a class="bg-red-500 p-1 rounded-md" href="{% url 'leaderboard' page_obj.previous_page_number %}"><=</a>
+      <a class="bg-red-500 p-1 rounded-md" href="?page={{ page_obj.previous_page_number }}"><=</a>
       {% endif %}
       <span class="bg-gray-500 p-1 rounded-md">
         {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
       </span>
       {% if page_obj.has_next %}
-      <a class="bg-green-500 p-1 rounded-md" href="{% url 'leaderboard' page_obj.next_page_number %}">=></a>
+      <a class="bg-green-500 p-1 rounded-md" href="?page={{ page_obj.next_page_number }}">=></a>
       {% endif %}
     </div>
     <!-- End -->
