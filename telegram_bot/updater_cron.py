@@ -53,6 +53,9 @@ def calculate_points():
     if not response["events"][latest_gw.GW_number - 1]["finished"] or latest_gw.finished:
         return
 
+    latest_gw.finished = True
+    latest_gw.save()
+
     predictions = latest_gw.gw_predictions.all()
 
     if not predictions:
@@ -83,9 +86,6 @@ def calculate_points():
         prediction.filled_by.weekly_prediction_points = prediction.achieved_points
         prediction.filled_by.total_prediction_points += prediction.achieved_points
         prediction.filled_by.save()
-
-    latest_gw.finished = True
-    latest_gw.save()
 
     update_fixtures()
 

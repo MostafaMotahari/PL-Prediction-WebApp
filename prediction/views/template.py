@@ -1,7 +1,8 @@
-from cgitb import enable
 from django.views.generic.edit import FormView
+from django.views.generic.list import ListView
 from django.shortcuts import render
 from django.utils import timezone
+from account.models import User
 
 from prediction.models import FixtureModel, PredictionModel, GWModel
 from prediction.forms import MatchFormSet
@@ -49,3 +50,16 @@ class PredictionView(TokenValidationMixin, FormView):
         print(formset.errors)
         print(formset.non_form_errors())
         return render(request, 'failed.html')
+
+
+# Leaderboard   
+class LeaderboardView(ListView):
+    model = User
+    template_name = 'leaderboard.html'
+    paginate_by = 20
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['total_points_leaderboard'] = User.objects.order_by('-total_prediction_points')
+        context['weekly_points_leaderboard'] = User.objects.order_by('-weekly_prediction_points')
+        return context
