@@ -27,13 +27,13 @@
     <!-- Pagination Section -->
     <div class="flex flex-row items-center justify-center mt-3 font-['Ubuntu'] font-bold text-sm text-white space-x-1">
       {% if total_points_leaderboard.has_previous %}
-      <a class="bg-red-500 p-1 rounded-md" href="?page={{ total_points_leaderboard.previous_page_number }}"><img class="w-6 h-6" src="{% static 'img/back.png' %}" alt="pervious-page"></a>
+      <a href="?page={{ total_points_leaderboard.previous_page_number }}"><img class="w-6 h-6" src="{% static 'img/back.png' %}" alt="pervious-page"></a>
       {% endif %}
       <span class="bg-gray-500 p-1 rounded-md">
         {{ total_points_leaderboard.number }} of {{ total_points_leaderboard.paginator.num_pages }}
       </span>
       {% if total_points_leaderboard.has_next %}
-      <a class="bg-green-500 p-1 rounded-md" href="?page={{ total_points_leaderboard.next_page_number }}"><img class="w-6 h-6" src="{% static 'img/next.png' %}" alt="next-page"></a>
+      <a href="?page={{ total_points_leaderboard.next_page_number }}"><img class="w-6 h-6" src="{% static 'img/next.png' %}" alt="next-page"></a>
       {% endif %}
     </div>
     <!-- End -->
