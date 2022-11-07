@@ -15,8 +15,8 @@
         </thead>
         <tbody>
           {% for user in total_points_leaderboard %}
-          <tr class="{% if forloop.counter == 1 %}bg-yellow-200{% elif forloop.counter == 2 %}bg-neutral-400{% elif forloop.counter == 3 %}bg-rose-500{% endif %} bg-opacity-75 backdrop-blur-md rounded-xl drop-shadow-lg">
-            <td class="px-4 py-2 text-center">{{ forloop.counter }}</td>
+          <tr class="{% if total_points_leaderboard.number == 1 %}{% if forloop.counter == 1 %}bg-yellow-200{% elif forloop.counter == 2 %}bg-neutral-400{% elif forloop.counter == 3 %}bg-rose-500{% endif %}{% endif %} bg-opacity-75 backdrop-blur-md rounded-xl drop-shadow-lg">
+            <td class="px-4 py-2 text-center">{{ forloop.counter0|add:total_points_leaderboard.start_index }}</td>
             <td class="px-4 py-2 text-center">{{ user.username|truncatechars:15 }}</td>
             <td class="px-4 py-2 text-center">{{ user.total_prediction_points }}</td>
           </tr>
