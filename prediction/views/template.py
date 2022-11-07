@@ -1,5 +1,6 @@
 from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
+from django.core import paginator
 from django.shortcuts import render
 from django.utils import timezone
 from account.models import User
@@ -56,10 +57,19 @@ class PredictionView(TokenValidationMixin, FormView):
 class LeaderboardView(ListView):
     model = User
     template_name = 'leaderboard.html'
-    paginate_by = 20
 
     def get_context_data(self, **kwargs):
+        users_total_points = User.objects.order_by('-total_prediction_points')
+        users_total_points_paginator = paginator.Paginator(users_total_points, 15)
+        users_weekly_points = User.objects.order_by('-weekly_prediction_points')
+        users_weekly_points_paginator = paginator.Paginator(users_weekly_points, 15)
+
+        page_number = self.request.GET.get('page')
+        total_points_page_obj = users_total_points_paginator.get_page(page_number)
+        weekly_points_page_obj = users_weekly_points_paginator.get_page(page_number)
+
+
         context = super().get_context_data(**kwargs)
-        context['total_points_leaderboard'] = User.objects.order_by('-total_prediction_points')
-        context['weekly_points_leaderboard'] = User.objects.order_by('-weekly_prediction_points')
+        context['total_points_leaderboard'] = total_points_page_obj
+        context['weekly_points_leaderboard'] = weekly_points_page_obj
         return context
