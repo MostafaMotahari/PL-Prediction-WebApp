@@ -27,9 +27,9 @@ def public_message_preview(client: Client, message: Message):
 
 
 @Client.on_callback_query(filters.regex("^(send|cancel)_public_message$"))
-async def public_message(client: Client, callback_query: CallbackQuery):
+def public_message(client: Client, callback_query: CallbackQuery):
     if callback_query.data == "cancel_public_message":
-        await callback_query.message.edit(
+        callback_query.message.edit(
             "❌ Broadcast canceled."
         )
         return
@@ -37,7 +37,7 @@ async def public_message(client: Client, callback_query: CallbackQuery):
     users = User.objects.all()
     for user in users:
         try:
-            await callback_query.message.copy(
+            callback_query.message.copy(
                 user.telegram_id,
                 reply_markup=None
             )
@@ -46,7 +46,7 @@ async def public_message(client: Client, callback_query: CallbackQuery):
             print(e)
             continue
 
-    await callback_query.message.reply_text(
+    callback_query.message.reply_text(
         "✅ Broadcast sent."
     )
     
