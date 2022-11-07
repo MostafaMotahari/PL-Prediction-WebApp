@@ -60,9 +60,9 @@ class LeaderboardView(ListView):
 
     def get_context_data(self, **kwargs):
         users_total_points = User.objects.order_by('-total_prediction_points')
-        users_total_points_paginator = paginator.Paginator(users_total_points, 15)
+        users_total_points_paginator = paginator.Paginator(users_total_points, 20)
         users_weekly_points = User.objects.order_by('-weekly_prediction_points')
-        users_weekly_points_paginator = paginator.Paginator(users_weekly_points, 15)
+        users_weekly_points_paginator = paginator.Paginator(users_weekly_points, 20)
 
         page_number = self.request.GET.get('page')
         total_points_page_obj = users_total_points_paginator.get_page(page_number)
