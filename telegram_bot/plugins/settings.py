@@ -108,7 +108,7 @@ BASE_API_URL = "https://fantasy.premierleague.com/api/"
 HEADERS = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:88.0) Gecko/20100101 Firefox/88.0"}
 
 @Client.on_message(admin_filter & filters.private & filters.command(["update"]))
-def update_fixtures(client: Client, message: Message):
+def update_fixtures_handler(client: Client, message: Message):
     # Update fixtures
     message.reply_text("Updating fixtures...")
 
