@@ -4,9 +4,12 @@ from account.models import User
 from pyrogram import filters
 from pyrogram.client import Client
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
+from prediction.models import GWModel
 from decouple import config
+import requests
 
 from telegram_bot.plugins.custom_filters import admin_filter
+from telegram_bot.updater_cron import update_fixtures
 
 # Message templates
 SETTING_MESSAGE = """
@@ -98,3 +101,26 @@ def prediction_mode(client: Client, callback_query):
             "prediction_off" if config("BOT_PREDICTION_MODE") == "ON" else "prediction_on",
         )
     )
+
+# Update fixtures
+
+BASE_API_URL = "https://fantasy.premierleague.com/api/"
+HEADERS = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:88.0) Gecko/20100101 Firefox/88.0"}
+
+@Client.on_message(admin_filter & filters.private & filters.command(["update"]))
+def update_fixtures(client: Client, message: Message):
+    # Update fixtures
+    message.reply_text("Updating fixtures...")
+
+    # Update fixtures
+    latest_gw = GWModel.objects.latest("id")
+
+    response = requests.get(BASE_API_URL + "bootstrap-static/", headers=HEADERS).json()
+
+    if not response["events"][latest_gw.GW_number - 1]["finished"] or latest_gw.finished:
+        message.reply_text("Fixtures already updated!")
+        return
+
+    update_fixtures()
+
+    message.reply_text("Fixtures updated!")

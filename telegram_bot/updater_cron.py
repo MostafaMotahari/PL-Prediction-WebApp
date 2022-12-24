@@ -48,11 +48,6 @@ def update_fixtures():
 def calculate_points():
     latest_gw = GWModel.objects.latest("id")
 
-    response = requests.get(BASE_API_URL + "bootstrap-static/", headers=HEADERS).json()
-
-    if not response["events"][latest_gw.GW_number - 1]["finished"] or latest_gw.finished:
-        return
-
     latest_gw.finished = True
     latest_gw.save()
 
@@ -94,6 +89,5 @@ def calculate_points():
 
 def start_updater_job():
     scheduler = BackgroundScheduler(timezone="Asia/Tehran")
-    scheduler.add_job(calculate_points, "cron", hour=0, minute=0)
     scheduler.add_job(disable_gw_after_deadline, "interval", hours=1)
     scheduler.start()
