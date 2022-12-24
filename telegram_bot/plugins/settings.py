@@ -9,7 +9,7 @@ from decouple import config
 import requests
 
 from telegram_bot.plugins.custom_filters import admin_filter
-from telegram_bot.updater_cron import update_fixtures
+from telegram_bot.updater_cron import calculate_points
 
 # Message templates
 SETTING_MESSAGE = """
@@ -118,9 +118,9 @@ def update_fixtures_handler(client: Client, message: Message):
     response = requests.get(BASE_API_URL + "bootstrap-static/", headers=HEADERS).json()
 
     if not response["events"][latest_gw.GW_number - 1]["finished"] or latest_gw.finished:
-        message.reply_text("Fixtures already updated!")
+        message.reply_text("Fixtures already updated!❌")
         return
 
-    update_fixtures()
+    calculate_points()
 
-    sent_msg.edit_text("Fixtures updated!")
+    sent_msg.edit_text("Fixtures updated!✅")
