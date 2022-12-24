@@ -53,6 +53,8 @@ def calculate_points():
 
     predictions = latest_gw.gw_predictions.all()
 
+    update_fixtures()
+
     if not predictions:
         return
     response = requests.get(BASE_API_URL + "fixtures/", headers=HEADERS).json()
@@ -82,7 +84,6 @@ def calculate_points():
         prediction.filled_by.total_prediction_points += prediction.achieved_points
         prediction.filled_by.save()
 
-    update_fixtures()
 
     return True
 
