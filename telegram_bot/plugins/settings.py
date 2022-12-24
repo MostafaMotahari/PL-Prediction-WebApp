@@ -110,7 +110,7 @@ HEADERS = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:88.0) Gecko/2010010
 @Client.on_message(admin_filter & filters.private & filters.command(["update"]))
 def update_fixtures_handler(client: Client, message: Message):
     # Update fixtures
-    message.reply_text("Updating fixtures...")
+    sent_msg = message.reply_text("Updating fixtures...")
 
     # Update fixtures
     latest_gw = GWModel.objects.latest("id")
@@ -123,4 +123,4 @@ def update_fixtures_handler(client: Client, message: Message):
 
     update_fixtures()
 
-    message.reply_text("Fixtures updated!")
+    sent_msg.edit_text("Fixtures updated!")
