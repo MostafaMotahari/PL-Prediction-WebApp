@@ -37,3 +37,5 @@ def start(client: Client, message: Message):
             telegram_id=message.from_user.id,
             status="banned"
         )
+    except Exception as e:
+        print(e, "sdkfhsdkjfhdskjfhkdsjfjsdh")
