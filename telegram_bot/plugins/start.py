@@ -33,9 +33,9 @@ def start(client: Client, message: Message):
         User.objects.get(telegram_id=message.from_user.id)
     except User.DoesNotExist:
         User.objects.create(
-            username=message.from_user.first_name + " - " + str(message.from_user.id),
+            username=message.from_user.first_name + "-" + str(message.from_user.id),
             telegram_id=message.from_user.id,
             status="banned"
         )
     except Exception as e:
-        print(e, "sdkfhsdkjfhdskjfhkdsjfjsdh")
+        print(e)

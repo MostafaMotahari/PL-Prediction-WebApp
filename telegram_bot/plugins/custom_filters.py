@@ -44,6 +44,9 @@ def banned_filter(_, __, message):
         user.status = "banned"
         user.save()
         return False
+        
+    except user.DoesNotExist:
+        return False
 
     except Exception as e:
         print(e)
