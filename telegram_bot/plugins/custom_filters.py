@@ -20,9 +20,9 @@ admin_filter = filters.create(admin_filter)
 
 
 def banned_filter(_, __, message):
-    try:
-        user = User.objects.get(telegram_id=message.from_user.id)
+    user = User.objects.get(telegram_id=message.from_user.id)
 
+    try:
         if __.get_chat_member(config("MAIN_CHANNEL"), message.from_user.id):
             if user.status == "banned":
                 user.status = "user"
