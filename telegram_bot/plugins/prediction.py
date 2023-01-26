@@ -73,4 +73,19 @@ def prediction_menu(client: Client, message: Message):
     message.reply_text(
         "❌ Predictions are currently disabled."
     )
-    
+
+
+@Client.on_callback_query(filters.private & filters.regex("^show_history$") & power_mode_filter & banned_filter)
+def user_sheet_show(client: Client, message: Message):
+    user = User.objects.get(telegram_id=message.from_user.id)
+
+    if user.predictions:
+        message.reply_text(
+            "Choose one of your prediction sheets:",
+            reply_markup=InlineKeyboardButton(
+                [[InlineKeyboardButton(f"Gameweek {prediction.GW.GW_number}", url=f"http://{ALLOWED_HOSTS[0]}/user-sheet/{message.from_user.id}?gw={prediction.GW.GW_number}") for prediction in user.predictions]]
+            )
+        )
+        return True
+
+    message.reply_text("You have not any submitted prediction yet!")

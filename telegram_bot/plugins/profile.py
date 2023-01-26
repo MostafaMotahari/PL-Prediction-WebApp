@@ -1,7 +1,7 @@
 from account.models import User
 from pyrogram import filters
 from pyrogram.client import Client
-from pyrogram.types import Message
+from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 
 from telegram_bot.plugins.custom_filters import banned_filter, power_mode_filter
 
@@ -22,5 +22,8 @@ def profile(client: Client, message: Message):
         "⭐️ Prediction points:\n"
         f"- Weekly points: {user.weekly_prediction_points}\n"
         f"- Monthly points: {user.monthly_prediction_points}\n"
-        f"- Total points: {user.total_prediction_points}\n"
+        f"- Total points: {user.total_prediction_points}\n",
+        reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton("View History", callback_data="view_history")]]
+        )
     )

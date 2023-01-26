@@ -12,7 +12,7 @@
     {% load static tailwind_tags %}
     {% tailwind_css %}
     {% block styles %}{% endblock %}
-    <title>PL Prediction</title>
+    <title>{% block title %}PL Prediction{% endblock %}</title>
 </head>
 <body class="flex justify-center items-center bg-blue-pl bg-no-repeat bg-center bg-cover">
     {% block content %}

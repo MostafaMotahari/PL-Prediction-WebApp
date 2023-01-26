@@ -2,19 +2,22 @@ from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 from django.core import paginator
 from django.shortcuts import render
+from config.settings import ALLOWED_HOSTS
 from django.utils import timezone
+import urllib
+import requests
 from account.models import User
 
 from prediction.models import FixtureModel, PredictionModel, GWModel
 from prediction.forms import MatchFormSet
 from prediction.mixins import TokenValidationMixin
 
+
 # Create your views here.
 class PredictionView(TokenValidationMixin, FormView):
     model = PredictionModel
     template_name = 'prediction.html'
     form_class = MatchFormSet
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -24,7 +27,6 @@ class PredictionView(TokenValidationMixin, FormView):
         context['fixtures'] = FixtureModel.objects.filter(GW=latest_gw)
         context['formset'] = MatchFormSet()
         return context
-
 
     def post(self, request, *args, **kwargs):
         formset = MatchFormSet(request.POST)
@@ -46,6 +48,11 @@ class PredictionView(TokenValidationMixin, FormView):
             request.user.token_expiry = timezone.now()
             request.user.save()
 
+            # Send the sheet details in channel
+            user_sheet_url = f"http://{ALLOWED_HOSTS[0]}/user-sheet/{request.user.telegram_id}?gw{gw_obj.GW_number}"
+            user_sheet_notify = f"{request.user.username}'s prediction for week {gw_obj.GW_number} was successfully registered!\n\n(Check it out now in website!)[{user_sheet_url}]\n\nSubmit your prediction now -> @PLPredictionBot"
+            requests.get('' + urllib.parse.quote(user_sheet_notify))
+
             return render(request, 'successful_predict.html')
 
         print(formset.errors)
@@ -53,7 +60,7 @@ class PredictionView(TokenValidationMixin, FormView):
         return render(request, 'failed.html')
 
 
-# Leaderboard   
+# Leaderboard
 class LeaderboardView(ListView):
     model = User
     template_name = 'leaderboard.html'
@@ -68,8 +75,8 @@ class LeaderboardView(ListView):
         total_points_page_obj = users_total_points_paginator.get_page(page_number)
         weekly_points_page_obj = users_weekly_points_paginator.get_page(page_number)
 
-
         context = super().get_context_data(**kwargs)
         context['total_points_leaderboard'] = total_points_page_obj
         context['weekly_points_leaderboard'] = weekly_points_page_obj
         return context
+

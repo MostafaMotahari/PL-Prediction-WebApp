@@ -20,4 +20,5 @@ from django.urls.conf import include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('prediction/', include('prediction.urls')),
+    path('account/', include('account.urls'))
 ]
