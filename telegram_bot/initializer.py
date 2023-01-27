@@ -15,5 +15,5 @@ app = Client(
     api_hash=config("API_HASH"),
     bot_token=config("BOT_TOKEN"),
     plugins=PLUGINS,
-    proxy=PROXY,
+#    proxy=PROXY,
 )

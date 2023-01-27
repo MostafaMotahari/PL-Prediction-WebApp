@@ -75,17 +75,17 @@ def prediction_menu(client: Client, message: Message):
     )
 
 
-@Client.on_callback_query(filters.private & filters.regex("^show_history$") & power_mode_filter & banned_filter)
-def user_sheet_show(client: Client, message: Message):
-    user = User.objects.get(telegram_id=message.from_user.id)
+@Client.on_callback_query(filters.regex("^view_history$") & power_mode_filter)
+def user_sheet_show(client: Client, query):
+    user = User.objects.get(telegram_id=query.from_user.id)
 
     if user.predictions:
-        message.reply_text(
+        query.message.reply_text(
             "Choose one of your prediction sheets:",
-            reply_markup=InlineKeyboardButton(
-                [[InlineKeyboardButton(f"Gameweek {prediction.GW.GW_number}", url=f"http://{ALLOWED_HOSTS[0]}/user-sheet/{message.from_user.id}?gw={prediction.GW.GW_number}") for prediction in user.predictions]]
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton(f"Gameweek {prediction.GW.GW_number}", url=f"http://{ALLOWED_HOSTS[0]}/account/user-sheet/{query.message.from_user.id}?gw={prediction.GW.GW_number}")] for prediction in user.predictions.all()]
             )
         )
         return True
 
-    message.reply_text("You have not any submitted prediction yet!")
+    query.reply_text("You have not any submitted prediction yet!")
