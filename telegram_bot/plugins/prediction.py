@@ -83,7 +83,7 @@ def user_sheet_show(client: Client, query):
         query.message.reply_text(
             "Choose one of your prediction sheets:",
             reply_markup=InlineKeyboardMarkup(
-                [[InlineKeyboardButton(f"Gameweek {prediction.GW.GW_number}", url=f"http://{ALLOWED_HOSTS[0]}/account/user-sheet/{query.message.from_user.id}?gw={prediction.GW.GW_number}")] for prediction in user.predictions.all()]
+                [[InlineKeyboardButton(f"Gameweek {prediction.GW.GW_number}", url=f"http://{ALLOWED_HOSTS[0]}/account/user-sheet/{user.pk}?gw={prediction.GW.GW_number}")] for prediction in user.predictions.all()]
             )
         )
         return True
