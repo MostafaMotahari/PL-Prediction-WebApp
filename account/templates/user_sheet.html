@@ -2,38 +2,40 @@
 {% load static %}
 {% load widget_tweaks %}
 
-{% block title %}user.telegram_id{% endblock %}
+{% block title %}{{ user.telegram_id }}{% endblock %}
 
 {% block content %}
-<div class="flex justify-center items-center h-screen">
-    <div class="flex flex-col items-center bg-white bg-opacity-40 backdrop-blur-md rounded-xl drop-shadow-lg p-4">
-        {% for match in prediction.matches %}
-        <div class="flex flex-row justify-center items-center bg-white bg-opacity-40 backdrop-blur-md rounded-xl drop-shadow-lg my-3 p-4 space-x-2 lg:space-x-4 font-['Ubuntu']">
-            <div class="flex flex-col items-center">
-              <img class="w-20 h-20" src="{{ match.fixture.home_team.logo.url }}" alt="">
-              <span class="font-bold">{{ match.fixture.home_team.name }}</span>
-            </div>
-
-            <div class="flex flex-col items-center">
-                <div class="bg-transparent border-transparent w-8 p-1 text-center text-2xl font-bold">
-                    {{ match.team1_score }}
+<div class="h-screen overflow-y-scroll">
+    <div class="flex justify-center items-center h-screen">
+        <div class="flex flex-col items-center bg-white bg-opacity-40 backdrop-blur-md rounded-xl drop-shadow-lg p-4">
+            {% for match in prediction.matches %}
+            <div class="flex flex-row justify-center items-center bg-white bg-opacity-40 backdrop-blur-md rounded-xl drop-shadow-lg my-3 p-4 space-x-2 lg:space-x-4 font-['Ubuntu']">
+                <div class="flex flex-col items-center">
+                  <img class="w-20 h-20" src="{{ match.fixture.home_team.logo.url }}" alt="">
+                  <span class="font-bold">{{ match.fixture.home_team.name }}</span>
                 </div>
-            </div>
 
-            <img class="w-10 h-10" src="{% static 'img/vs.png' %}" alt="">
-
-            <div class="flex flex-col items-center">
-                <div class="bg-transparent border-transparent w-8 p-1 text-center text-2xl font-bold">
-                    {{ match.team2_score }}
+                <div class="flex flex-col items-center">
+                    <div class="bg-transparent border-transparent w-8 p-1 text-center text-2xl font-bold">
+                        {{ match.team1_score }}
+                    </div>
                 </div>
-            </div>
 
-            <div class="flex flex-col items-center">
-              <img class="w-20 h-20" src="{{ match.fixture.away_team.logo.url }}" alt="">
-              <span class="font-bold">{{ match.fixture.away_team.name }}</span>
-            </div>
-      </div>
-      {% endfor %}
+                <img class="w-10 h-10" src="{% static 'img/vs.png' %}" alt="">
+
+                <div class="flex flex-col items-center">
+                    <div class="bg-transparent border-transparent w-8 p-1 text-center text-2xl font-bold">
+                        {{ match.team2_score }}
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center">
+                  <img class="w-20 h-20" src="{{ match.fixture.away_team.logo.url }}" alt="">
+                  <span class="font-bold">{{ match.fixture.away_team.name }}</span>
+                </div>
+          </div>
+          {% endfor %}
+        </div>
     </div>
 </div>
 {% endblock %}
