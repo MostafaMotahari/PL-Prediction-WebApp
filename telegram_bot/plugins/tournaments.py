@@ -58,9 +58,8 @@ def confirm_team_id(client: Client, query: CallbackQuery):
     tournament_pk = query.data.split("-")[1]
     query.message.edit_text("__Please wait...__")
 
-    team_id = re.search(r": (.*)", query.message.text)
+    team_id = re.findall(r": (.*)", query.message.text)[0]
     team = requests.get(f"{BASE_API_URL}/entry/{team_id}/")
-    print(team.text)
     team = team.json()
 
     if team['detail'] == "Not found.":
