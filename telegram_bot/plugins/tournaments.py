@@ -6,7 +6,7 @@ import requests
 from tournament import models as tour_models
 
 
-BASE_API_URL = "https://fantasy.premierleague.com/api/"
+BASE_API_URL = "https://fantasy.premierleague.com/api"
 keyboard = [
     [InlineKeyboardButton("1", callback_data="1"), InlineKeyboardButton("2", callback_data="2"), InlineKeyboardButton("3", callback_data="3")],
     [InlineKeyboardButton("4", callback_data="4"), InlineKeyboardButton("5", callback_data="5"), InlineKeyboardButton("6", callback_data="6")],
@@ -58,7 +58,7 @@ def confirm_team_id(client: Client, query: CallbackQuery):
     tournament_pk = query.data.split("-")[1]
     query.message.edit_text("__Please wait...__")
 
-    team_id = re.findall(r": (.*)", query.message.text)[0]
+    team_id = re.findall("\d+", query.message.text)[1]
     team = requests.get(f"{BASE_API_URL}/entry/{team_id}/")
     team = team.json()
 
@@ -101,7 +101,6 @@ def confirm_joining(client: Client, query: CallbackQuery):
     tournament = tour_models.Tournament.objects.get(pk=query.data.split("-")[2])
     team_id = query.data.splite("-")[1]
     team = requests.get(f"{BASE_API_URL}/entry/{team_id}/")
-    print(team.text)
     team = team.json()
 
     for league in team['leagues']['classic']:
