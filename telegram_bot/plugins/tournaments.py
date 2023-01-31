@@ -83,7 +83,7 @@ def confirm_team_id(client: Client, query: CallbackQuery):
 @Client.on_callback_query(filters.regex("^confirm_team_id-(.*)-(.*)$"))
 def submit_team_id(client: Client, query: CallbackQuery):
     tournament_pk = query.data.split("-")[2]
-    tournament = tour_models.Tournament.get(pk=tournament_pk)
+    tournament = tour_models.Tournament.objects.get(pk=tournament_pk)
     team_id = query.data.split("-")[1]
     query.message.edit_text(
         "Alright!\n"
