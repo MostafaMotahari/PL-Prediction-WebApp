@@ -4,7 +4,8 @@ from django.db import models
 class Tournament(models.Model):
     name = models.CharField(max_length=100, verbose_name='Tournament Name')
     telegram_id = models.CharField(max_length=20, unique=True, verbose_name='Telegram ID')
-    related_league_code = models.CharField(max_length=10, verbose_name='Related League Code')
+    related_league_invite = models.CharField(max_length=10, verbose_name='Related League Code')
+    related_league_code = models.IntegerField(default=0, verbose_name='Related League Code')
     related_league_link = models.URLField(verbose_name='Related League Link')
     player_capacity = models.IntegerField(verbose_name='Player Capacity')
 
