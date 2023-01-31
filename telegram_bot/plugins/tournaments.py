@@ -34,7 +34,6 @@ def register_message(client: Client, query: CallbackQuery):
     keyboard[3][2].callback_data = f"confirm-{tournament.pk}"
 
     query.message.edit_text(
-        query.message.chat.id,
         f"You're registering in **{tournament.name}** tournament.\n"
         f"Tournament code {tournament.pk}"
         "Please enter your team integer ID:\n"
