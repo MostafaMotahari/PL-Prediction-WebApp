@@ -15,10 +15,9 @@ BASE_API_URL = "https://fantasy.premierleague.com/api/"
 # League data scraper
 def league_scraper(message: Message, league_id: int, standing_page: int = 1):
     # Get league data
-    
-        # Get classic league from api
+    # Get classic league from api
     classic_league = requests.get(f"{BASE_API_URL}leagues-classic/{league_id}/standings/?page_standings={standing_page}")
-    
+
     classic_league = classic_league.json()
 
     # Sort standings data
@@ -41,7 +40,7 @@ def league_scraper(message: Message, league_id: int, standing_page: int = 1):
     draw = ImageDraw.Draw(image)
     font = ImageFont.truetype(os.getcwd() + template_model.text_font.url, 20)
     draw.text((36, 20), str(standings_table), font=font, fill="black")
-    image.save(os.getcwd() +  "/media/images/standings.png") # Saving the created image
+    image.save(os.getcwd() + "/media/images/standings.png")  # Saving the created image
 
     # Inline Keyboard
     inline_keyboard = [[]]
@@ -55,7 +54,7 @@ def league_scraper(message: Message, league_id: int, standing_page: int = 1):
     # Send the league state as new message
     message.edit_media(
         media=InputMediaPhoto(
-            media=os.getcwd() +  "/media/images/standings.png",
+            media=os.getcwd() + "/media/images/standings.png",
 
             caption=f"🏆 **{classic_league['league']['name']} Standings**\n"
             f"➕ Created Date: {classic_league['league']['created']}\n"

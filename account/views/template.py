@@ -1,5 +1,4 @@
 from django.views.generic.detail import DetailView
-from prediction import models
 from account import models as account_models
 
 

@@ -16,6 +16,7 @@ def start(client: Client, message: Message):
             
             reply_markup=ReplyKeyboardMarkup(
                 [
+                    [KeyboardButton("Tournaments")],
                     [KeyboardButton("📊 Stats"), KeyboardButton("⚽️ Predictions 🎲")],
                     [KeyboardButton("👤 Profile")],
                     [KeyboardButton("📱 Verify Phone Number", True)],

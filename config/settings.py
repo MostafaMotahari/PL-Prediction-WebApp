@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'prediction',
     'account',
     'telegram_bot',
+    'tournament',
 ]
 
 MIDDLEWARE = [
