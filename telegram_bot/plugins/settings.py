@@ -1,10 +1,11 @@
 import os
 
-from account.models import User
 from pyrogram import filters
 from pyrogram.client import Client
-from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from prediction.models import GWModel
+from account.models import User
+from tournament.models import Tournament
 from decouple import config
 import requests
 
@@ -22,6 +23,7 @@ Prediction mode: {}
 - Banned: {}
 """
 
+
 def inline_keyboard_maker(power_mode, prediction_mode):
     keyboard = [
         [InlineKeyboardButton(
@@ -31,6 +33,10 @@ def inline_keyboard_maker(power_mode, prediction_mode):
         [InlineKeyboardButton(
             "🔮Prediction mode🔮",
             callback_data=prediction_mode
+        )],
+        [InlineKeyboardButton(
+            "Tournaments",
+            callback_data="admin-tournaments"
         )]
     ]
 
@@ -124,3 +130,19 @@ def update_fixtures_handler(client: Client, message: Message):
     calculate_points()
 
     sent_msg.edit_text("Fixtures updated!✅")
+
+
+@Client.on_callback_query(filters.regex("admin-tournaments"))
+def admin_tournaments(client: Client, callback_query: CallbackQuery):
+    tournaments = Tournament.objects.all()
+    message_text = "Here are available tournaments:\n\n"
+
+    for tour in tournaments:
+        message_text += f"{tour.pk}. **{tour.name}**\nCapacity: {len(tour.players.all())} of {tour.player_capacity} is completed.\n\n"
+
+    client.send_message(
+        callback_query.message.chat.id,
+        message_text,
+    )
+
+

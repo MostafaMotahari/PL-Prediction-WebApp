@@ -18,12 +18,18 @@ keyboard = [
 @Client.on_message(filters.private & filters.regex("^Tournaments$"))
 def get_tournaments(client: Client, message: Message):
     tournaments = tour_models.Tournament.objects.all()
+    message_text = "Here are available tournaments that you can register now:\n\n"
+    tour_keyboard = []
+
+    for tour in tournaments:
+        if tournaments.has_capacity():
+            message_text += f"{tour.pk}. **{tour.name}**\nCapacity: {len(tour.players.all())} of {tour.player_capacity} is completed.\n\n"
+            tour_keyboard.append([InlineKeyboardButton(tour.name, callback_data=f"register-{tour.pk}")])
+
     client.send_message(
         message.chat.id,
-        f"There are {len(tournaments)} available tournaments:",
-        reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton(tour.name, callback_data=f"register-{tour.pk}")] for tour in tournaments]
-        )
+        message_text,
+        reply_markup=InlineKeyboardMarkup(tour_keyboard)
     )
 
 
