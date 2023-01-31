@@ -60,6 +60,7 @@ def confirm_team_id(client: Client, query: CallbackQuery):
 
     team_id = re.search(r": (.*)", query.message.text)
     team = requests.get(f"{BASE_API_URL}/entry/{team_id}/")
+    print(team.text)
     team = team.json()
 
     if team['detail'] == "Not found.":
