@@ -29,7 +29,7 @@ def get_tournaments(client: Client, message: Message):
 
 @Client.on_callback_query(filters.regex("^register-(.*)$"))
 def register_message(client: Client, query: CallbackQuery):
-    tournament = tour_models.Tournament.get(pk=query.data.split("-")[1])
+    tournament = tour_models.Tournament.objects.get(pk=query.data.split("-")[1])
     client.send_message(
         f"You're registering in **{tournament.name}** tournament.\n"
         f"Tournament code {tournament.pk}"
@@ -95,7 +95,7 @@ def submit_team_id(client: Client, query: CallbackQuery):
 
 @Client.on_callback_query(filters.private & filters.regex("^confirm_joining-(.*)-(.*)$"))
 def confirm_joining(client: Client, query: CallbackQuery):
-    tournament = tour_models.Tournament.get(pk=query.data.split("-")[2])
+    tournament = tour_models.Tournament.objects.get(pk=query.data.split("-")[2])
     team_id = query.data.splite("-")[1]
     team = requests.get(f"{BASE_API_URL}/entry/{team_id}/")
     team = team.json()
