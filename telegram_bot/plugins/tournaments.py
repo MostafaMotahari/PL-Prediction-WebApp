@@ -31,6 +31,7 @@ def get_tournaments(client: Client, message: Message):
 def register_message(client: Client, query: CallbackQuery):
     tournament = tour_models.Tournament.objects.get(pk=query.data.split("-")[1])
     client.send_message(
+        query.message.chat.id,
         f"You're registering in **{tournament.name}** tournament.\n"
         f"Tournament code {tournament.pk}"
         "Please enter your team integer ID:\n"
