@@ -40,7 +40,7 @@ def register_message(client: Client, query: CallbackQuery):
     )
 
 
-@Client.on_callback_query(filters.private & filters.regex("^[0-9]$"))
+@Client.on_callback_query(filters.regex("^[0-9]$"))
 def submit_button(client: Client, query: CallbackQuery):
     pressed_button = "**" + query.data + "**"
 
@@ -51,7 +51,7 @@ def submit_button(client: Client, query: CallbackQuery):
     return 1
 
 
-@Client.on_callback_query(filters.private & filters.regex("^confirm$"))
+@Client.on_callback_query(filters.regex("^confirm$"))
 def confirm_team_id(client: Client, query: CallbackQuery):
     tournament_pk = re.search(r"Tournament code (.*)", query.message.text)
     query.message.edit_text("__Please wait...__")
@@ -78,7 +78,7 @@ def confirm_team_id(client: Client, query: CallbackQuery):
     )
 
 
-@Client.on_callback_query(filters.private & filters.regex("^confirm_team_id-(.*)-(.*)$"))
+@Client.on_callback_query(filters.regex("^confirm_team_id-(.*)-(.*)$"))
 def submit_team_id(client: Client, query: CallbackQuery):
     tournament_pk = query.data.splite("-")[2]
     tournament = tour_models.Tournament.get(pk=tournament_pk)
@@ -94,7 +94,7 @@ def submit_team_id(client: Client, query: CallbackQuery):
     )
 
 
-@Client.on_callback_query(filters.private & filters.regex("^confirm_joining-(.*)-(.*)$"))
+@Client.on_callback_query(filters.regex("^confirm_joining-(.*)-(.*)$"))
 def confirm_joining(client: Client, query: CallbackQuery):
     tournament = tour_models.Tournament.objects.get(pk=query.data.split("-")[2])
     team_id = query.data.splite("-")[1]
