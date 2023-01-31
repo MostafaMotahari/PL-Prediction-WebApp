@@ -91,7 +91,7 @@ def send_leagues(client: Client, message: Message):
             animation=os.getcwd() + loading_message.loading_video.url,
             caption=loading_message.loading_text,
             reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton(league.name, callback_data=league.code)] for league in leagues
+                [InlineKeyboardButton(league.name, callback_data=f"state-{league.code}")] for league in leagues
             ])
         )
 
@@ -108,7 +108,7 @@ def send_leagues(client: Client, message: Message):
 
 
 # Main function that gets league data from fpl api and sort it
-@Client.on_callback_query(filters.regex("^[0-9]+") & power_mode_filter & banned_filter)
+@Client.on_callback_query(filters.regex("^state-[0-9]+") & power_mode_filter & banned_filter)
 def get_league_state(client: Client, callback_query: CallbackQuery):
 
     league_id = int(callback_query.data.split(":")[0])
