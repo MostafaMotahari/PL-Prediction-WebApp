@@ -97,7 +97,7 @@ def submit_team_id(client: Client, query: CallbackQuery):
         f"Join by code: `{tournament.related_league_code}`\n"
         f"(**Auto Joining Link**)[{tournament.related_league_link}]",
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("Joined!", caallback_data=f"confirm_joining-{team_id}-{tournament_pk}"), InlineKeyboardButton("Cancel", callback_data="cancel")]]
+            [[InlineKeyboardButton("Joined!", callback_data=f"confirm_joining-{team_id}-{tournament_pk}"), InlineKeyboardButton("Cancel", callback_data="cancel")]]
         )
     )
 
