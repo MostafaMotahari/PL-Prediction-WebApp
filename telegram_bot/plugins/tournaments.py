@@ -11,7 +11,7 @@ keyboard = [
     [InlineKeyboardButton("1", callback_data="1"), InlineKeyboardButton("2", callback_data="2"), InlineKeyboardButton("3", callback_data="3")],
     [InlineKeyboardButton("4", callback_data="4"), InlineKeyboardButton("5", callback_data="5"), InlineKeyboardButton("6", callback_data="6")],
     [InlineKeyboardButton("7", callback_data="7"), InlineKeyboardButton("8", callback_data="8"),InlineKeyboardButton("9", callback_data="9")],
-    [InlineKeyboardButton("0", callback_data="0"), InlineKeyboardButton("Cancel", callback_data="cancel"), InlineKeyboardButton("Confirm", callback_data="confirm")],
+    [InlineKeyboardButton("0", callback_data="0"), InlineKeyboardButton("Clear", callback_data="clear"), InlineKeyboardButton("Confirm", callback_data="confirm")],
 ]
 
 
@@ -27,9 +27,12 @@ def get_tournaments(client: Client, message: Message):
     )
 
 
-@Client.on_callback_query(filters.regex("^register-(.*)$"))
+@Client.on_callback_query(filters.regex("^register-(.*)$") | filters.regext("^clear-(.*)$"))
 def register_message(client: Client, query: CallbackQuery):
     tournament = tour_models.Tournament.objects.get(pk=query.data.split("-")[1])
+    keyboard[3][1].callback_data = f"clear-{tournament.pk}"
+    keyboard[3][2].callback_data = f"confirm-{tournament.pk}"
+
     client.send_message(
         query.message.chat.id,
         f"You're registering in **{tournament.name}** tournament.\n"
@@ -42,18 +45,18 @@ def register_message(client: Client, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("^[0-9]$"))
 def submit_button(client: Client, query: CallbackQuery):
-    pressed_button = "**" + query.data + "**"
+    pressed_button = query.data
 
     query.message.edit_text(
-        query.message.text + pressed_button,
+        query.message.text + " **" + pressed_button + "**",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
     return 1
 
 
-@Client.on_callback_query(filters.regex("^confirm$"))
+@Client.on_callback_query(filters.regex("^confirm-(.*)$"))
 def confirm_team_id(client: Client, query: CallbackQuery):
-    tournament_pk = re.search(r"Tournament code (.*)", query.message.text)
+    tournament_pk = query.data.split("-")[1]
     query.message.edit_text("__Please wait...__")
 
     team_id = re.search(r": (.*)", query.message.text)
