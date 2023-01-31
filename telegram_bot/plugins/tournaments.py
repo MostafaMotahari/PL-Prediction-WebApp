@@ -95,7 +95,7 @@ def submit_team_id(client: Client, query: CallbackQuery):
         "Alright!\n"
         "Now to compelete your registeration, please join in below league and after that press the 'Joined!' button.\n\n"
         f"Join by code: `{tournament.related_league_code}`\n"
-        f"**(Auto Joining Link)[{tournament.related_league_link}]**",
+        f"**[Auto Joining Link]({tournament.related_league_link})**",
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton("Joined!", callback_data=f"confirm_joining-{team_id}-{tournament_pk}"), InlineKeyboardButton("Cancel", callback_data="cancel")]]
         )
@@ -110,9 +110,10 @@ def confirm_joining(client: Client, query: CallbackQuery):
     team = team.json()
 
     for league in team['leagues']['classic']:
-        if league['id'] == 2441037:
+        if league['id'] == int(tournament.related_league_code):
             player = tour_models.Player.create(
                 tournament=tournament,
+                telegram_id=query.from_user.id,
                 team_id=team_id,
                 team_name=team['name'],
                 team_region=team['player_region_name'],
