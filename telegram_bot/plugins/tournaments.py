@@ -22,7 +22,7 @@ def get_tournaments(client: Client, message: Message):
     tour_keyboard = []
 
     for tour in tournaments:
-        if tournaments.has_capacity():
+        if tour.has_capacity():
             message_text += f"{tour.pk}. **{tour.name}**\nCapacity: {len(tour.players.all())} of {tour.player_capacity} is completed.\n\n"
             tour_keyboard.append([InlineKeyboardButton(tour.name, callback_data=f"register-{tour.pk}")])
 
