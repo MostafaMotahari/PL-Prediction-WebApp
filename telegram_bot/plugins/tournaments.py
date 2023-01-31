@@ -82,9 +82,9 @@ def confirm_team_id(client: Client, query: CallbackQuery):
 
 @Client.on_callback_query(filters.regex("^confirm_team_id-(.*)-(.*)$"))
 def submit_team_id(client: Client, query: CallbackQuery):
-    tournament_pk = query.data.splite("-")[2]
+    tournament_pk = query.data.split("-")[2]
     tournament = tour_models.Tournament.get(pk=tournament_pk)
-    team_id = query.data.splite("-")[1]
+    team_id = query.data.split("-")[1]
     query.message.edit_text(
         "Alright!\n"
         "Now to compelete your registeration, please join in below league and after that press the 'Joined!' button.\n\n"
@@ -99,7 +99,7 @@ def submit_team_id(client: Client, query: CallbackQuery):
 @Client.on_callback_query(filters.regex("^confirm_joining-(.*)-(.*)$"))
 def confirm_joining(client: Client, query: CallbackQuery):
     tournament = tour_models.Tournament.objects.get(pk=query.data.split("-")[2])
-    team_id = query.data.splite("-")[1]
+    team_id = query.data.split("-")[1]
     team = requests.get(f"{BASE_API_URL}/entry/{team_id}/")
     team = team.json()
 
