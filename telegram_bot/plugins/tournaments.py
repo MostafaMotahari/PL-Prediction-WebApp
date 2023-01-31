@@ -27,13 +27,13 @@ def get_tournaments(client: Client, message: Message):
     )
 
 
-@Client.on_callback_query(filters.regex("^register-(.*)$") | filters.regext("^clear-(.*)$"))
+@Client.on_callback_query(filters.regex("^register-(.*)$") | filters.regex("^clear-(.*)$"))
 def register_message(client: Client, query: CallbackQuery):
     tournament = tour_models.Tournament.objects.get(pk=query.data.split("-")[1])
     keyboard[3][1].callback_data = f"clear-{tournament.pk}"
     keyboard[3][2].callback_data = f"confirm-{tournament.pk}"
 
-    client.send_message(
+    query.message.edit_text(
         query.message.chat.id,
         f"You're registering in **{tournament.name}** tournament.\n"
         f"Tournament code {tournament.pk}"
@@ -48,7 +48,7 @@ def submit_button(client: Client, query: CallbackQuery):
     pressed_button = query.data
 
     query.message.edit_text(
-        query.message.text + " **" + pressed_button + "**",
+        query.message.text + "**" + pressed_button + "**",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
     return 1
@@ -102,6 +102,7 @@ def confirm_joining(client: Client, query: CallbackQuery):
     tournament = tour_models.Tournament.objects.get(pk=query.data.split("-")[2])
     team_id = query.data.splite("-")[1]
     team = requests.get(f"{BASE_API_URL}/entry/{team_id}/")
+    print(team.text)
     team = team.json()
 
     for league in team['leagues']['classic']:
