@@ -62,7 +62,7 @@ def confirm_team_id(client: Client, query: CallbackQuery):
     team = requests.get(f"{BASE_API_URL}/entry/{team_id}/")
     team = team.json()
 
-    if team['detail'] == "Not found.":
+    if team.get('detail', None):
         query.answer("404 Not found!!!")
         return 0
 
