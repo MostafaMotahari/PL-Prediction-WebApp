@@ -56,8 +56,9 @@ def settings(client: Client, message: Message):
         reply_markup=inline_keyboard_maker(
             "power_off" if config("BOT_POWER_MODE") == "ON" else "power_on",
             "prediction_off" if config("BOT_PREDICTION_MODE") == "ON" else "prediction_on",
-        )  
+        )
     )
+
 
 # Power mode snippet
 @Client.on_callback_query(filters.regex("power_(on|off)"))
@@ -108,10 +109,11 @@ def prediction_mode(client: Client, callback_query):
         )
     )
 
-# Update fixtures
 
+# Update fixtures
 BASE_API_URL = "https://fantasy.premierleague.com/api/"
 HEADERS = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:88.0) Gecko/20100101 Firefox/88.0"}
+
 
 @Client.on_message(admin_filter & filters.private & filters.command(["update"]))
 def update_fixtures_handler(client: Client, message: Message):
@@ -140,9 +142,10 @@ def admin_tournaments(client: Client, callback_query: CallbackQuery):
     for tour in tournaments:
         message_text += f"{tour.pk}. **{tour.name}**\nCapacity: {len(tour.players.all())} of {tour.player_capacity} is completed.\n\n"
 
-    client.send_message(
+    callback_query.message.edit_text(
         callback_query.message.chat.id,
         message_text,
+        reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton("Back to settings", callback_data="back_to_settings")]]
+        )
     )
-
-

@@ -1,4 +1,5 @@
 from account.models import User
+from tournament.models import Tournament
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram.errors import UserNotParticipant
@@ -16,6 +17,7 @@ def admin_filter(_, __, message):
     except:
         return False
 
+
 admin_filter = filters.create(admin_filter)
 
 
@@ -27,9 +29,9 @@ def banned_filter(_, __, message):
             if user.status == "banned":
                 user.status = "user"
                 user.save()
-            
+
             return True
-        
+
     except UserNotParticipant:
         message.reply_text(
             "You are not a member of the main channel. Please join the main channel and try again.",
@@ -49,4 +51,18 @@ def banned_filter(_, __, message):
         print(e)
         return False
 
+
 banned_filter = filters.create(banned_filter)
+
+
+def is_participant(_, __, query):
+    try:
+        Tournament.objects.get(players__telegram_id=query.from_user.id)
+        query.answer("You are already participating in this tournament.")
+        return False
+
+    except Tournament.DoesNotExist:
+        return True
+
+
+is_participant_filter = filters.create(is_participant)

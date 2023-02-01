@@ -1,9 +1,11 @@
-from pyrogram.client import Client
-from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
-from pyrogram import filters
 import re
 import requests
+from pyrogram.client import Client
+from pyrogram import filters
+from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
+
 from tournament import models as tour_models
+from telegram_bot.plugins.custom_filters import is_participant_filter
 
 
 BASE_API_URL = "https://fantasy.premierleague.com/api"
@@ -33,7 +35,7 @@ def get_tournaments(client: Client, message: Message):
     )
 
 
-@Client.on_callback_query(filters.regex("^register-(.*)$") | filters.regex("^clear-(.*)$"))
+@Client.on_callback_query(filters.regex("^register-(.*)$") | filters.regex("^clear-(.*)$") & is_participant_filter)
 def register_message(client: Client, query: CallbackQuery):
     tournament = tour_models.Tournament.objects.get(pk=query.data.split("-")[1])
     keyboard[3][1].callback_data = f"clear-{tournament.pk}"
@@ -59,7 +61,7 @@ def submit_button(client: Client, query: CallbackQuery):
     return 1
 
 
-@Client.on_callback_query(filters.regex("^confirm-(.*)$"))
+@Client.on_callback_query(filters.regex("^confirm-(.*)$") & is_participant_filter)
 def confirm_team_id(client: Client, query: CallbackQuery):
     tournament_pk = query.data.split("-")[1]
     query.message.edit_text("__Please wait...__")
@@ -86,7 +88,7 @@ def confirm_team_id(client: Client, query: CallbackQuery):
     )
 
 
-@Client.on_callback_query(filters.regex("^confirm_team_id-(.*)-(.*)$"))
+@Client.on_callback_query(filters.regex("^confirm_team_id-(.*)-(.*)$") & is_participant_filter)
 def submit_team_id(client: Client, query: CallbackQuery):
     tournament_pk = query.data.split("-")[2]
     tournament = tour_models.Tournament.objects.get(pk=tournament_pk)
@@ -102,7 +104,7 @@ def submit_team_id(client: Client, query: CallbackQuery):
     )
 
 
-@Client.on_callback_query(filters.regex("^confirm_joining-(.*)-(.*)$"))
+@Client.on_callback_query(filters.regex("^confirm_joining-(.*)-(.*)$") & is_participant_filter)
 def confirm_joining(client: Client, query: CallbackQuery):
     tournament = tour_models.Tournament.objects.get(pk=query.data.split("-")[2])
     team_id = query.data.split("-")[1]
@@ -113,6 +115,7 @@ def confirm_joining(client: Client, query: CallbackQuery):
         if league['id'] == int(tournament.related_league_code):
             player = tour_models.Player.create(
                 tournament=tournament,
+                full_name=team['player_first_name'] + ' ' + team['player_last_name'],
                 telegram_id=query.from_user.id,
                 team_id=team_id,
                 team_name=team['name'],
@@ -123,6 +126,15 @@ def confirm_joining(client: Client, query: CallbackQuery):
                 "Congratulations!\n"
                 "Your registeration has been successfully completed!\n\n"
                 f"Your registeration code is: **{player.pk}**"
+            )
+
+            client.send_message(
+                "FBI_Phoenix",
+                "A new user has been registered!\n\n"
+                f"ID: **{player.team_id}**\n"
+                f"Team Name: {player.team_name}\n"
+                f"Full Name: {player.full_name}\n"
+                f"Overall: {team['summary_overall_rank']}"
             )
             break
 

@@ -14,6 +14,7 @@ class Tournament(models.Model):
 
 class Player(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name='players', verbose_name='Tournament')
+    full_name = models.CharField(max_length=100, verbose_name='Full Name')
     telegram_id = models.CharField(max_length=20, unique=True, verbose_name='Telegram ID')
     team_id = models.CharField(max_length=10, unique=True, verbose_name='Team ID')
     team_name = models.CharField(max_length=50, verbose_name='Team name')
