@@ -63,7 +63,7 @@ def prediction_menu(client: Client, message: Message):
                 )
 
                 return 0
-        
+
         message.reply_text(
             "❌ First, you need to verify your phone number."
             "For this, you can use the **📱 Veify Phone Number** button in the main menu."
@@ -79,7 +79,7 @@ def prediction_menu(client: Client, message: Message):
 def user_sheet_show(client: Client, query):
     user = User.objects.get(telegram_id=query.from_user.id)
 
-    if user.predictions:
+    if user.predictions.all():
         query.message.reply_text(
             "Choose one of your prediction sheets:",
             reply_markup=InlineKeyboardMarkup(

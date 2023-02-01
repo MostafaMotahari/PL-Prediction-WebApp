@@ -18,7 +18,6 @@ def profile(client: Client, message: Message):
         f"- Phone number: {user.phone_number}\n"
         f"- Card number: {user.card_number}\n"
         f"- Status: {user.status}\n\n"
-        
         "⭐️ Prediction points:\n"
         f"- Weekly points: {user.weekly_prediction_points}\n"
         f"- Monthly points: {user.monthly_prediction_points}\n"

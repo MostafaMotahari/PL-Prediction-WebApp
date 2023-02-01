@@ -39,7 +39,7 @@ def banned_filter(_, __, message):
                 [[
                     InlineKeyboardButton("FBI Coach", url=f"https://t.me/{config('MAIN_CHANNEL')}"),
                 ],[
-                    InlineKeyboardButton("FPL PHOENIX", url="https://t.me/FPL PHOENIX")
+                    InlineKeyboardButton("FPL PHOENIX", url="https://t.me/FPL_PHOENIX")
                 ],[
                     InlineKeyboardButton("Confirm", url="https://t.me/PLPredictionBot?start")
                 ]]
