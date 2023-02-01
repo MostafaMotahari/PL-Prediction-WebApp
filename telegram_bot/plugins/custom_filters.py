@@ -25,7 +25,7 @@ def banned_filter(_, __, message):
     try:
         user = User.objects.get(telegram_id=message.from_user.id)
 
-        if __.get_chat_member(config("MAIN_CHANNEL"), message.from_user.id):
+        if __.get_chat_member(config("MAIN_CHANNEL"), message.from_user.id) and __.get_chat_member("Fpl_Phoenix", message.from_user.id):
             if user.status == "banned":
                 user.status = "user"
                 user.save()
@@ -34,10 +34,12 @@ def banned_filter(_, __, message):
 
     except UserNotParticipant:
         message.reply_text(
-            "You are not a member of the main channel. Please join the main channel and try again.",
+            "You are not a member of our channels. Please join the our channels and try again.",
             reply_markup=InlineKeyboardMarkup(
                 [[
-                    InlineKeyboardButton("Join Channel", url=f"https://t.me/{config('MAIN_CHANNEL')}"),
+                    InlineKeyboardButton("FBI Coach", url=f"https://t.me/{config('MAIN_CHANNEL')}"),
+                ],[
+                    InlineKeyboardButton("FPL PHOENIX", url="https://t.me/FPL PHOENIX")
                 ],[
                     InlineKeyboardButton("Confirm", url="https://t.me/PLPredictionBot?start")
                 ]]

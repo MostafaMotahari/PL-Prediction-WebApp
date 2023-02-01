@@ -5,7 +5,7 @@ from pyrogram import filters
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 
 from tournament import models as tour_models
-from telegram_bot.plugins.custom_filters import is_participant_filter
+from telegram_bot.plugins.custom_filters import is_participant_filter, power_mode_filter, banned_filter
 
 
 BASE_API_URL = "https://fantasy.premierleague.com/api"
@@ -17,7 +17,7 @@ keyboard = [
 ]
 
 
-@Client.on_message(filters.private & filters.regex("^Tournaments$"))
+@Client.on_message(filters.private & filters.regex("^Tournaments$") & banned_filter & power_mode_filter)
 def get_tournaments(client: Client, message: Message):
     tournaments = tour_models.Tournament.objects.all()
     message_text = "Here are available tournaments that you can register now:\n\n"

@@ -8,12 +8,11 @@ from pyrogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 def start(client: Client, message: Message):
     # Send start message
     if len(message.text.split(" ")) == 1:
-            message.reply_text(
+        message.reply_text(
             "Hi! I'm a bot for @FBI_Coach.\n"
             "I'm created by @Mousiol.\n"
             "I'm a bot that can help you to get the latest stats from the Fantasy Premier League.\n"
             "You can use /help to get the list of commands.\n",
-            
             reply_markup=ReplyKeyboardMarkup(
                 [
                     [KeyboardButton("Tournaments")],

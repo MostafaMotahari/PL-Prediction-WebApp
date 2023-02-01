@@ -143,7 +143,6 @@ def admin_tournaments(client: Client, callback_query: CallbackQuery):
         message_text += f"{tour.pk}. **{tour.name}**\nCapacity: {len(tour.players.all())} of {tour.player_capacity} is completed.\n\n"
 
     callback_query.message.edit_text(
-        callback_query.message.chat.id,
         message_text,
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton("Back to settings", callback_data="back_to_settings")]]
