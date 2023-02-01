@@ -38,16 +38,22 @@ def get_tournaments(client: Client, message: Message):
 @Client.on_callback_query(filters.regex("^register-(.*)$") | filters.regex("^clear-(.*)$") & is_participant_filter)
 def register_message(client: Client, query: CallbackQuery):
     tournament = tour_models.Tournament.objects.get(pk=query.data.split("-")[1])
-    keyboard[3][1].callback_data = f"clear-{tournament.pk}"
-    keyboard[3][2].callback_data = f"confirm-{tournament.pk}"
 
-    query.message.edit_text(
-        f"⚙️ You're registering in **{tournament.name}** tournament.\n"
-        f"🔘 Tournament code **{tournament.pk}**\n"
-        "Please enter your team integer ID\n\n"
-        "▶️ Your ID: ",
-        reply_markup=InlineKeyboardMarkup(keyboard)
-    )
+    try:
+        player = tour_models.Player.objects.get(telegram_id=query.from_user.id)
+        confirm_team_id(client, query, player.team_id, tournament.pk)
+
+    except tour_models.Player.DoesNotExist:
+        keyboard[3][1].callback_data = f"clear-{tournament.pk}"
+        keyboard[3][2].callback_data = f"confirm-{tournament.pk}"
+
+        query.message.edit_text(
+            f"⚙️ You're registering in **{tournament.name}** tournament.\n"
+            f"🔘 Tournament code **{tournament.pk}**\n"
+            "Please enter your team integer ID\n\n"
+            "▶️ Your ID: ",
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
 
 
 @Client.on_callback_query(filters.regex("^[0-9]$"))
@@ -62,11 +68,11 @@ def submit_button(client: Client, query: CallbackQuery):
 
 
 @Client.on_callback_query(filters.regex("^confirm-(.*)$") & is_participant_filter)
-def confirm_team_id(client: Client, query: CallbackQuery):
-    tournament_pk = query.data.split("-")[1]
+def confirm_team_id(client: Client, query: CallbackQuery, team_id=None, tournament_pk=None):
+    tournament_pk = tournament_pk or query.data.split("-")[1]
     query.message.edit_text("__Please wait...__")
 
-    team_id = re.findall("\d+", query.message.text)[1]
+    team_id = team_id or re.findall("\d+", query.message.text)[1]
     team = requests.get(f"{BASE_API_URL}/entry/{team_id}/")
     team = team.json()
 
@@ -113,14 +119,20 @@ def confirm_joining(client: Client, query: CallbackQuery):
 
     for league in team['leagues']['classic']:
         if league['id'] == int(tournament.related_league_code):
-            player = tour_models.Player.objects.create(
-                tournament=tournament,
-                full_name=team['player_first_name'] + ' ' + team['player_last_name'],
-                telegram_id=query.from_user.id,
-                team_id=team_id,
-                team_name=team['name'],
-                team_region=team['player_region_name'],
-            )
+            try:
+                player = tour_models.Player.objects.get(telegram_id=query.from_user.id)
+                player.tournament.add(tournament)
+                player.save()
+
+            except tour_models.Player.DoesNotExist:
+                player = tour_models.Player.objects.create(
+                    tournament=tournament,
+                    full_name=team['player_first_name'] + ' ' + team['player_last_name'],
+                    telegram_id=query.from_user.id,
+                    team_id=team_id,
+                    team_name=team['name'],
+                    team_region=team['player_region_name'],
+                )
 
             query.message.edit_text(
                 "🎉 Congratulations!\n"
@@ -134,7 +146,8 @@ def confirm_joining(client: Client, query: CallbackQuery):
                 f"ID: **{player.team_id}**\n"
                 f"Team Name: {player.team_name}\n"
                 f"Full Name: {player.full_name}\n"
-                f"Overall: {team['summary_overall_rank']}"
+                f"Overall: {team['summary_overall_rank']}\n\n"
+                f"PV: [{player.full_name}](tg://user?id={player.telegram_id})",
             )
             break
 

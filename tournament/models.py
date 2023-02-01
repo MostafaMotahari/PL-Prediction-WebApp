@@ -8,6 +8,9 @@ class Tournament(models.Model):
     related_league_link = models.URLField(verbose_name='Related League Link')
     player_capacity = models.IntegerField(verbose_name='Player Capacity')
 
+    def __str__(self):
+        return self.name
+
     def has_capacity(self):
         return True if len(self.players.all()) < self.player_capacity else False
 
@@ -19,6 +22,9 @@ class Player(models.Model):
     team_id = models.CharField(max_length=10, unique=True, verbose_name='Team ID')
     team_name = models.CharField(max_length=50, verbose_name='Team name')
     team_region = models.CharField(max_length=50, verbose_name='Region')
+
+    def __str__(self):
+        return self.full_name
 
 
 class Event(models.Model):
