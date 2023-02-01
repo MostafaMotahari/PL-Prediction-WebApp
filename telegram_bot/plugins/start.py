@@ -15,7 +15,7 @@ def start(client: Client, message: Message):
             "You can use /help to get the list of commands.\n",
             reply_markup=ReplyKeyboardMarkup(
                 [
-                    [KeyboardButton("Tournaments")],
+                    [KeyboardButton("🏆 Tournaments 🏆")],
                     [KeyboardButton("📊 Stats"), KeyboardButton("⚽️ Predictions 🎲")],
                     [KeyboardButton("👤 Profile")],
                     [KeyboardButton("📱 Verify Phone Number", True)],

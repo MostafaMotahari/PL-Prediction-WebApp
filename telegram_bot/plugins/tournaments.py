@@ -17,7 +17,7 @@ keyboard = [
 ]
 
 
-@Client.on_message(filters.private & filters.regex("^Tournaments$") & banned_filter & power_mode_filter)
+@Client.on_message(filters.private & filters.regex("^🏆 Tournaments 🏆$") & banned_filter & power_mode_filter)
 def get_tournaments(client: Client, message: Message):
     tournaments = tour_models.Tournament.objects.all()
     message_text = "Here are available tournaments that you can register now:\n\n"
@@ -42,10 +42,10 @@ def register_message(client: Client, query: CallbackQuery):
     keyboard[3][2].callback_data = f"confirm-{tournament.pk}"
 
     query.message.edit_text(
-        f"You're registering in **{tournament.name}** tournament.\n"
-        f"Tournament code {tournament.pk}"
-        "Please enter your team integer ID:\n"
-        "Your ID: ",
+        f"⚙️ You're registering in **{tournament.name}** tournament.\n"
+        f"🔘 Tournament code **{tournament.pk}**\n"
+        "Please enter your team integer ID\n\n"
+        "▶️ Your ID: ",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
@@ -75,13 +75,13 @@ def confirm_team_id(client: Client, query: CallbackQuery):
         return 0
 
     query.message.edit_text(
-        "Is this your team?\n\n"
-        f"ID: **{team['id']}**\n"
-        f"Team name: {team['name']}\n"
-        f"Player name: {team['player_first_name']} {team['player_last_name']}\n"
-        f"Overall points: {team['summary_overall_points']}\n"
-        f"Overall rank: {team['summary_overall_rank']}\n"
-        f"Region: {team['player_region_name']}",
+        "Is this your team❓\n\n"
+        f"🔘 ID: **{team['id']}**\n"
+        f"🔘 Team name: {team['name']}\n"
+        f"🔘 Player name: {team['player_first_name']} {team['player_last_name']}\n"
+        f"🔘 Overall points: {team['summary_overall_points']}\n"
+        f"🔘 Overall rank: {team['summary_overall_rank']}\n"
+        f"🔘 Region: {team['player_region_name']}",
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton("Yes, this is!", callback_data=f"confirm_team_id-{team_id}-{tournament_pk}"), InlineKeyboardButton("Hell, No!", callback_data="cancel")]]
         )
@@ -94,10 +94,10 @@ def submit_team_id(client: Client, query: CallbackQuery):
     tournament = tour_models.Tournament.objects.get(pk=tournament_pk)
     team_id = query.data.split("-")[1]
     query.message.edit_text(
-        "Alright!\n"
+        "☑️ Alright!\n"
         "Now to compelete your registeration, please join in below league and after that press the 'Joined!' button.\n\n"
-        f"Join by code: `{tournament.related_league_invite}`\n"
-        f"**[Auto Joining Link]({tournament.related_league_link})**",
+        f"🔸 Join by code: `{tournament.related_league_invite}`\n"
+        f"🔹 **[Auto Joining Link]({tournament.related_league_link})**",
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton("Joined!", callback_data=f"confirm_joining-{team_id}-{tournament_pk}"), InlineKeyboardButton("Cancel", callback_data="cancel")]]
         )
@@ -113,7 +113,7 @@ def confirm_joining(client: Client, query: CallbackQuery):
 
     for league in team['leagues']['classic']:
         if league['id'] == int(tournament.related_league_code):
-            player = tour_models.Player.create(
+            player = tour_models.Player.objects.create(
                 tournament=tournament,
                 full_name=team['player_first_name'] + ' ' + team['player_last_name'],
                 telegram_id=query.from_user.id,
@@ -123,9 +123,9 @@ def confirm_joining(client: Client, query: CallbackQuery):
             )
 
             query.message.edit_text(
-                "Congratulations!\n"
-                "Your registeration has been successfully completed!\n\n"
-                f"Your registeration code is: **{player.pk}**"
+                "🎉 Congratulations!\n"
+                "✅ Your registeration has been successfully completed!\n\n"
+                f"👉 Your registeration code is: **{player.pk}**"
             )
 
             client.send_message(

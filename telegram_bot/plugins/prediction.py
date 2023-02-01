@@ -79,7 +79,7 @@ def prediction_menu(client: Client, message: Message):
 def user_sheet_show(client: Client, query):
     user = User.objects.get(telegram_id=query.from_user.id)
 
-    if user.predictions.all():
+    if len(user.predictions.all()) > 0:
         query.message.reply_text(
             "Choose one of your prediction sheets:",
             reply_markup=InlineKeyboardMarkup(
