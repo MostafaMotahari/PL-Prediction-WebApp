@@ -4,6 +4,7 @@ from django.core import paginator
 from django.shortcuts import render
 from config.settings import ALLOWED_HOSTS
 from django.utils import timezone
+from decouple import config
 import urllib
 import requests
 from account.models import User
@@ -51,7 +52,7 @@ class PredictionView(TokenValidationMixin, FormView):
             # Send the sheet details in channel
             user_sheet_url = f"http://{ALLOWED_HOSTS[0]}/user-sheet/{request.user.telegram_id}?gw{gw_obj.GW_number}"
             user_sheet_notify = f"{request.user.username}'s prediction for week {gw_obj.GW_number} was successfully registered!\n\n(Check it out now in website!)[{user_sheet_url}]\n\nSubmit your prediction now -> @PLPredictionBot"
-            requests.get('' + urllib.parse.quote(user_sheet_notify))
+            requests.get(f'https://api.telegram.org/bot{config("BOT_TOKEN")}/sendMessage?chat_id={config("PREDICTION_CHANNEL")}&text=' + urllib.parse.quote(user_sheet_notify))
 
             return render(request, 'successful_predict.html')
 
