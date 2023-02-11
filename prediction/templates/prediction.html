@@ -1,77 +1,133 @@
 {% extends "base/_base.html" %}
 {% load static %}
-{% load widget_tweaks %}
-{% load zip_lists %}
-
-{% block styles %}
-<link rel="stylesheet" href="{% static 'css/custom.css' %}">
-{% endblock %}
 
 {% block content %}
-<!-- Match Cards -->
-<div class="h-screen overflow-y-scroll">
-  <form action="" method="post">
-    <div class="flex flex-col">
-      {% csrf_token %}
-      {{ formset.management_form }}
-      
-      {% for fixture, form in fixtures|zip:formset %}
+<form
+    id="predictionForm"
+    class="flex h-full flex-col items-center justify-start gap-y-4 pb-24 sm:mr-24 md:pb-4 lg:mr-28 lg:pb-5">
+    {% csrf_token %}
+    {{ formset.management_form }}
 
-      {% render_field form.fixture_id value=fixture.id class='fixture-id' %}
-      
-      <div class="flex flex-row justify-center items-center bg-white bg-opacity-40 backdrop-blur-md rounded-xl drop-shadow-lg my-3 p-4 space-x-2 lg:space-x-4 font-['Ubuntu']">
-        <div class="flex flex-col items-center">
-          <img class="w-20 h-20" src="{{ fixture.home_team.logo.url }}" alt="">
-          <span class="font-bold">{{ fixture.home_team.name }}</span>
-        </div>
+    {% for fixture, form in fixtures|zip:formset %}
+    {% render_field form.fixture_id value=fixture.id class='fixture-id' %}
 
-        <div class="flex flex-col items-center">
-          <i onclick="increaseNumber('{{ form.team1_score.auto_id }}');" class="fa-sharp fa-solid fa-chevron-up"></i>
-          {{ form.team1_score|add_class:"bg-transparent border-transparent w-8 p-1 text-center text-2xl font-bold" }}
-          <i onclick="decreaseNumber('{{ form.team1_score.auto_id }}');" class="fa-sharp fa-solid fa-chevron-down"></i>
-        </div>
+    <!-- card component -->
+    <fieldset name="soccer_match" class="soccer-match-card" style="transition-delay: 0.1s">
+        <!-- team 1 logo & name -->
+        <figure class="min-w-[65px] max-w-[100px] md:min-w-fit">
+            <svg class="mx-auto h-24 w-full md:max-w-[100px]">
+                <use href="{% static 'images/icons.svg' %}#{{ fixture.home_team.svg_readable_name }}"></use>
+            </svg>
+            <figcaption class="team-name">{{ fixture.home_team.name }}</figcaption>
+        </figure>
 
-        <img class="w-10 h-10" src="{% static 'img/vs.png' %}" alt="">
+        <!-- team 1 score input & buttons -->
+        <label for="teamScore" class="flex flex-col items-center">
+            <!-- increment button -->
+            <button
+                type="button"
+                title="Increase Score"
+                class="js_predictionForm_btn js_increment_btn rounded-md">
+                <span class="sr-only">Increase Score</span>
+                <svg class="caret-icon increase-icon">
+                    <use href="{% static 'images/icons.svg#caret_up' %}"></use>
+                </svg>
+            </button>
 
-        <div class="flex flex-col items-center">
-          <i onclick="increaseNumber('{{ form.team2_score.auto_id }}');" class="fa-sharp fa-solid fa-chevron-up"></i>
-          {{ form.team2_score|add_class:"bg-transparent border-transparent w-8 p-1 text-center text-2xl font-bold" }}
-          <i onclick="decreaseNumber('{{ form.team2_score.auto_id }}');" class="fa-sharp fa-solid fa-chevron-down"></i>
-        </div>
+            <!-- score value input -->
+           {{ form.team1_score }}
 
-        <div class="flex flex-col items-center">
-          <img class="w-20 h-20" src="{{ fixture.away_team.logo.url }}" alt="">
-          <span class="font-bold">{{ fixture.away_team.name }}</span>
-        </div>
-      </div>
-      {% endfor %}
-      
+            <!-- decrement button -->
+            <button
+                type="button"
+                title="Decrease Score"
+                class="js_predictionForm_btn js_decrement_btn rounded-md">
+                <span class="sr-only">Decrease Score</span>
+                <svg class="caret-icon decrease-icon">
+                    <use href="{% static 'images/icons.svg#caret_down' %}"></use>
+                </svg>
+            </button>
+        </label>
+
+        <!-- versus sign -->
+        <svg class="-mx-1 max-w-[35px] md:-mx-2.5 md:w-20 md:max-w-none">
+            <use href="{% static 'images/icons.svg#versus_sign' %}"></use>
+        </svg>
+
+        <!-- team 2 score input & buttons -->
+        <label for="teamScore" class="flex flex-col items-center">
+            <!-- increment button -->
+            <button
+                type="button"
+                title="Increase Score"
+                class="js_predictionForm_btn js_increment_btn rounded-md">
+                <span class="sr-only">Increase Score</span>
+                <svg class="caret-icon increase-icon">
+                    <use href="{% static 'images/icons.svg#caret_up' %}"></use>
+                </svg>
+            </button>
+
+            <!-- score value input -->
+           {{ form.team2_score }}
+
+            <!-- decrement button -->
+            <button
+                type="button"
+                title="Decrease Score"
+                class="js_predictionForm_btn js_decrement_btn rounded-md">
+                <span class="sr-only">Decrease Score</span>
+                <svg class="caret-icon decrease-icon">
+                    <use href="{% static 'images/icons.svg#caret_down' %}"></use>
+                </svg>
+            </button>
+        </label>
+
+        <!-- team 2 logo & name -->
+        <figure class="min-w-[65px] max-w-[100px] md:min-w-fit">
+            <svg class="mx-auto h-24 w-full md:w-28">
+                <use href="{% static 'images/icons.svg' %}#{{ fixture.away_team.svg_readable_name }}"></use>
+            </svg>
+            <figcaption class="team-name">{{ fixture.away_team.name }}</figcaption>
+        </figure>
+    </fieldset>
+
+    <!-- submit button -->
+    <button
+        type="submit"
+        title="Submit Form"
+        id="submitBtn"
+        class="fixed right-1.5 bottom-4 z-40 flex h-16 w-16 animate-bounce items-center justify-center rounded-full border-2 border-blue-100 bg-blue-300 bg-opacity-20 p-3 shadow-2xl outline outline-4 outline-offset-[6px] outline-transparent backdrop-blur-md backdrop-filter transition-all duration-100 focus-visible:outline-iceCold sm:right-4 lg:bottom-5 lg:right-5 lg:h-20 lg:w-20 support:hover:border-4">
+        <span class="sr-only">Submit Form</span>
+        <img
+            src="{% static 'images/ball.webp' %}"
+            alt="Accelerating ball"
+            width="50"
+            height="50"
+            class="h-full w-full" />
+    </button>
+</form>
+
+<!-- stat container -->
+<aside
+    role="status"
+    class="fixed left-1.5 bottom-4 z-40 space-y-1 rounded-xl border border-blue-100 bg-blue-300 bg-opacity-20 p-1.5 text-[10px] tracking-wide text-white shadow-2xl backdrop-blur-md backdrop-filter sm:left-4 sm:p-2 sm:text-xs lg:text-sm">
+    <div class="flex items-center justify-start gap-x-1">
+        <svg class="h-5 w-5 fill-iceCold">
+            <use href="{% static 'images/icons.svg#bolt_circle' %}"></use>
+        </svg>
+        <p>
+            Gameweek :
+            <strong id="gameWeekNumber" class="tracking-widest">{{ game_week.GW_number }}</strong>
+        </p>
     </div>
-    
-    <!-- Submit Bar -->
-    <div class="flex flex-row md:rounded-t-lg outline outline-offset-2 outline-1 p-3 bg-white bg-opacity-40 backdrop-blur-md drop-shadow-lg sticky md:mx-1 bottom-0">
-      <div class="flex flex-row font-bold font-['Ubuntu'] space-x-2">
-
-        <div class="flex flex-col justify-center space-y-2">
-          <i class="fa-solid fa-bolt-lightning"></i>
-          <i class="fa-sharp fa-solid fa-circle-info"></i>
-        </div>
-        
-        <div class="flex flex-col">
-          <span>Gameweek: {{ game_week.GW_number }}</span>
-          <span>Your ID: {{ user.telegram_id }}</span>
-        </div>
-
-      </div>
-      <button class="flex bg-white bg-opacity-40 backdrop-blur-md shadow-xl rounded-full h-16 w-16 items-center justify-center absolute right-4 -mt-9" type="submit">
-        <img class="w-6 h-6" src="{% static 'img/football.png' %}" alt="">
-      </button>
+    <div class="flex items-center justify-start gap-x-0.5">
+        <svg class="mr-0.5 h-5 w-5 fill-iceCold">
+            <use href="{% static 'images/icons.svg#info_circle' %}"></use>
+        </svg>
+        <p>
+            Your ID :
+            <strong id="userId" class="tracking-widest">{{ user.telegram_id }}</strong>
+        </p>
     </div>
-  </form>
-</div>
-{% endblock %}
-
-{% block scripts %}
-<script src="{% static 'js/increament_buttons.js' %}"></script>
-<script src="{% static 'js/form_actions.js' %}"></script>
+</aside>
 {% endblock %}

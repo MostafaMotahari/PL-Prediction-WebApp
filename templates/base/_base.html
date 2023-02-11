@@ -2,25 +2,50 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap" rel="stylesheet">
-    {% load static tailwind_tags %}
-    {% tailwind_css %}
-    {% block styles %}{% endblock %}
-    <title>{% block title %}PL Prediction{% endblock %}</title>
-</head>
-<body class="flex justify-center items-center bg-blue-pl bg-no-repeat bg-center bg-cover">
-    {% block content %}
-    {% endblock %}
+<html lang="en" dir="ltr">
+	<head>
+		<title>PL Prediction</title>
 
-    {% block scripts %}
-    {% endblock %}
+		<!-- meta tags -->
+		<meta charset="UTF-8" />
+		<meta name="language" content="EN" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="keywords" content="PL soccer prediction" />
+		<meta name="description" content="This is a cool website in which you anticipate the result of soccer matches." />
+		<meta name="theme-color" content="#BDF4F9" />
+		<meta name="color-scheme" content="dark" />
 
-    {% include 'base/_footer.html' %}
-</body>
+		<!-- styles -->
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+        {% load static tailwind_tags %}
+        {% tailwind_css %}
+
+		<!-- scripts -->
+        <script defer src="{% static 'js/main.js' %}"></script>
+	</head>
+
+	<body class="h-full min-h-screen bg-cover bg-fixed bg-no-repeat sm:bg-center">
+		<header>
+			<h1 class="mt-5 mb-7 text-center text-2xl font-bold tracking-wide md:mb-10 md:text-3xl xl:text-4xl">
+				PL Prediction Website
+			</h1>
+		</header>
+
+		<main class="m-auto flex h-full max-w-screen-xl flex-col items-center justify-between sm:items-end">
+            {% block content %}
+            {% endblock %}
+        </main>
+
+		<!-- alert box -->
+		<div
+			role="alertdialog"
+			id="AlertBox"
+			aria-hidden="true"
+			class="fixed bottom-3 left-1/2 z-50 flex w-[96.5%] max-w-lg origin-center -translate-x-1/2 scale-0 items-center gap-3 rounded-xl bg-red-300 p-3 text-xs font-medium text-red-900 shadow-2xl transition-all duration-200 sm:text-sm lg:bottom-5 xl:text-base">
+			<svg class="h-7 w-7 shrink-0 fill-red-900">
+				<use href="{% static 'images/icons.svg#info_circle' %}"></use>
+			</svg>
+			<p>This is some messsage shown in the alert box at the bottom of the page with some long content.</p>
+		</div>
+	</body>
 </html>

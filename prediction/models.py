@@ -20,6 +20,9 @@ class TeamModel(models.Model):
     def __str__(self):
         return self.name
 
+    def svg_readable_name(self):
+        return self.name.lower().replace('_', ' ')
+
 
 class FixtureModel(models.Model):
     GW = models.ForeignKey(GWModel, on_delete=models.CASCADE , verbose_name='Gameweek', related_name='fixtures')
