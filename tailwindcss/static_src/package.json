@@ -1,33 +1,30 @@
 {
-	"license": "MIT",
-	"homepage": "https://github.com/owner/project",
-	"readme": "https://github.com/owner/project#readme",
-	"author": {
-		"name": "Shayan Zamani",
-		"email": "sh.zamani384@gmail.com",
-		"url": "https://shayan-zamani.me/"
-	},
-	"keywords": [
-		"soccer prediction website"
-	],
-	"description": "A template for PL Soccer Prediction website.",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/owner/project",
-		"directory": "main"
-	},
-	"bugs": {
-		"url": "https://github.com/owner/project/issues",
-		"email": "email@example.com"
-	},
-	"devDependencies": {
-		"prettier": "^2.8.3",
-		"prettier-plugin-tailwindcss": "^0.2.2",
-		"tailwindcss": "^3.2.4"
-	},
-	"scripts": {
-		"dev": "npm tailwindcss -i ./assets/css/tw_input.css -o ./assets/css/styles.css --watch",
-		"prod": "npm tailwindcss -i ./assets/css/tw_input.css -o ./assets/css/styles.css --minify",
-		"format": "npx prettier --write ."
-	}
+  "name": "tailwindcss",
+  "version": "3.4.0",
+  "description": "",
+  "scripts": {
+    "start": "npm run dev",
+    "build": "npm run build:clean && npm run build:tailwind",
+    "build:clean": "rimraf ../static/css/dist",
+    "build:tailwind": "cross-env NODE_ENV=production tailwindcss --postcss -i ./src/styles.css -o ../static/css/dist/styles.css --minify",
+    "dev": "cross-env NODE_ENV=development tailwindcss --postcss -i ./src/styles.css -o ../static/css/dist/styles.css --watch",
+    "tailwindcss": "node ./node_modules/tailwindcss/lib/cli.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.0",
+    "@tailwindcss/forms": "^0.5.2",
+    "@tailwindcss/line-clamp": "^0.4.0",
+    "@tailwindcss/typography": "^0.5.2",
+    "cross-env": "^7.0.3",
+    "postcss": "^8.4.14",
+    "postcss-import": "^14.1.0",
+    "postcss-nested": "^5.0.6",
+    "postcss-simple-vars": "^6.0.3",
+    "rimraf": "^3.0.2",
+    "tailwindcss": "^3.1.6"
+  }
 }
+
