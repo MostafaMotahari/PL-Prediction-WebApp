@@ -61,7 +61,7 @@ button:active {
 
 /* fixed background */
 body {
-	background: linear-gradient(to bottom right, transparent 0%, rgba(0, 0, 0, 0.7) 100%), url('../images/bg.webp');
+	background: linear-gradient(to bottom right, transparent 0%, rgba(0, 0, 0, 0.7) 100%), url('/static/images/bg.webp');
 }
 
 /* when visitor tabs select element (keyboard-only) */
