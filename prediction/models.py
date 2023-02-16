@@ -21,7 +21,7 @@ class TeamModel(models.Model):
         return self.name
 
     def svg_readable_name(self):
-        return self.name.lower().replace('_', ' ')
+        return self.name.lower().replace(' ', '_') + "_logo"
 
 
 class FixtureModel(models.Model):
