@@ -37,13 +37,13 @@ class PredictionView(TokenValidationMixin, FormView):
 
         if formset.is_valid():
             for form in formset:
-                # Save each match form
-                instance = form.save(commit=False)
-                instance.GW = gw_obj
-                print(form.cleaned_data)
-                instance.fixture = FixtureModel.objects.get(id=form.cleaned_data['fixture_id'])
-                instance.prediction = prediction
-                instance.save()
+                if fixture_id := form.cleaned_data.get('fixture_id', None):
+                    # Save each match form
+                    instance = form.save(commit=False)
+                    instance.GW = gw_obj
+                    instance.fixture = FixtureModel.objects.get(id=fixture_id)
+                    instance.prediction = prediction
+                    instance.save()
 
             prediction.save()
             request.user.token_expiry = timezone.now()
