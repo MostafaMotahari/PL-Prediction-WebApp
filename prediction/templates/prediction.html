@@ -6,7 +6,7 @@
 {% block content %}
 <form
     id="predictionForm"
-    class="flex h-full flex-col items-center justify-start gap-y-4 pb-24 sm:mr-24 md:pb-4 lg:mr-28 lg:pb-5">
+    class="flex h-full flex-col items-center justify-start gap-y-4 pb-24 sm:mr-24 md:pb-4 lg:mr-32 lg:pb-5"
     {% csrf_token %}
     {{ formset.management_form }}
 
@@ -16,8 +16,8 @@
     <!-- card component -->
     <fieldset name="soccer_match" class="soccer-match-card" style="transition-delay: 0.1s">
         <!-- team 1 logo & name -->
-        <figure class="min-w-[65px] max-w-[100px] md:min-w-fit">
-            <svg class="mx-auto h-24 w-full md:max-w-[100px]">
+        <figure class="min-w-[68px] max-w-[100px] md:w-[120px] md:max-w-none">
+            <svg class="mx-auto h-24 w-full">
                 <use href="{% static 'images/icons.svg' %}#{{ fixture.home_team.svg_readable_name }}"></use>
             </svg>
             <figcaption class="team-name">{{ fixture.home_team.name }}</figcaption>
@@ -52,7 +52,7 @@
         </label>
 
         <!-- versus sign -->
-        <svg class="-mx-1 max-w-[35px] md:-mx-2.5 md:w-20 md:max-w-none">
+        <svg class="-mx-2.5 max-w-[35px] md:max-w-[45px]">
             <use href="{% static 'images/icons.svg' %}#versus_sign"></use>
         </svg>
 
@@ -85,8 +85,8 @@
         </label>
 
         <!-- team 2 logo & name -->
-        <figure class="min-w-[65px] max-w-[100px] md:min-w-fit">
-            <svg class="mx-auto h-24 w-full md:w-28">
+        <figure class="min-w-[68px] max-w-[100px] md:w-[120px] md:max-w-none">
+            <svg class="mx-auto h-24 w-full">
                 <use href="{% static 'images/icons.svg' %}#{{ fixture.away_team.svg_readable_name }}"></use>
             </svg>
             <figcaption class="team-name">{{ fixture.away_team.name }}</figcaption>
