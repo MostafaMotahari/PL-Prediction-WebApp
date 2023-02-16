@@ -23,7 +23,7 @@ class MatchForm(forms.ModelForm):
 
     class Meta:
         model = MatchModel
-        fields = ['team1_score', 'team2_score']
+        fields = ['fixture_id', 'team1_score', 'team2_score']
 
 
 MatchFormSet = forms.formset_factory(MatchForm, extra=20)
