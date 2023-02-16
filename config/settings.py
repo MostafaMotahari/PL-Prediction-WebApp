@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # modules
     'widget_tweaks',
-    'tailwind',
     # apps
     'tailwindcss',
     'prediction',
