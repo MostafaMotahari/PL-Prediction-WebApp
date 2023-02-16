@@ -8,12 +8,12 @@
     id="predictionForm"
     class="flex h-full flex-col items-center justify-start gap-y-4 pb-24 sm:mr-24 md:pb-4 lg:mr-32 lg:pb-5"
     method="post"
-    action=""
+    action="">
     {% csrf_token %}
     {{ formset.management_form }}
 
     {% for fixture, form in fixtures|zip:formset %}
-    {% render_field form.fixture_id value=fixture.id class='fixture-id' %}
+    {% render_field form.fixture_id value=fixture.id class='fixture_id' %}
 
     <!-- card component -->
     <fieldset name="soccer_match" class="soccer-match-card" style="transition-delay: 0.1s">
