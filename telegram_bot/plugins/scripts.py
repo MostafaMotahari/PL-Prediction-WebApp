@@ -3,7 +3,7 @@ from pyrogram import filters
 from pyrogram.client import Client
 from pyrogram.types import Message
 from tournament.models import Player
-from custom_filters import admin_filter
+from telegram_bot.plugins.custom_filters import admin_filter
 
 
 @Client.on_message(filters.private & filters.regex("^/player_csv$") & admin_filter)

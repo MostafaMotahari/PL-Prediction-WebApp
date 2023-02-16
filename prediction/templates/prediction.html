@@ -7,6 +7,8 @@
 <form
     id="predictionForm"
     class="flex h-full flex-col items-center justify-start gap-y-4 pb-24 sm:mr-24 md:pb-4 lg:mr-32 lg:pb-5"
+    method="post"
+    action=""
     {% csrf_token %}
     {{ formset.management_form }}
 
