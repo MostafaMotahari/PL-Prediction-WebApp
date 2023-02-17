@@ -143,6 +143,7 @@ def confirm_joining(client: Client, query: CallbackQuery):
             client.send_message(
                 "FBI_Phoenix",
                 "A new user has been registered!\n\n"
+                f"Tournament name: {tournament.name}\n"
                 f"ID: **{player.team_id}**\n"
                 f"Team Name: {player.team_name}\n"
                 f"Full Name: {player.full_name}\n"
