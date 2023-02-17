@@ -16,7 +16,7 @@ class Tournament(models.Model):
 
 
 class Player(models.Model):
-    tournaments = models.ManyToManyField(Tournament, on_delete=models.SET_NULL, related_name='players', verbose_name='Tournament')
+    tournaments = models.ManyToManyField(Tournament, related_name='players', verbose_name='Tournament')
     full_name = models.CharField(max_length=100, verbose_name='Full Name')
     telegram_id = models.CharField(max_length=20, unique=True, verbose_name='Telegram ID')
     team_id = models.CharField(max_length=10, unique=True, verbose_name='Team ID')
