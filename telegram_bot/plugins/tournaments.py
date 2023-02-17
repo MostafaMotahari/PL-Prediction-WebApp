@@ -121,7 +121,7 @@ def confirm_joining(client: Client, query: CallbackQuery):
         if league['id'] == int(tournament.related_league_code):
             try:
                 player = tour_models.Player.objects.get(telegram_id=query.from_user.id)
-                player.tournament.add(tournament)
+                player.tournaments.add(tournament)
                 player.save()
 
             except tour_models.Player.DoesNotExist:
