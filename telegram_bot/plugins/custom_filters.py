@@ -59,7 +59,7 @@ banned_filter = filters.create(banned_filter)
 
 def is_participant(_, __, query):
     try:
-        Tournament.objects.get(players__telegram_id=query.from_user.id)
+        Tournament.objects.get(pk=query.data.split("-")[2], players__telegram_id=query.from_user.id)
         query.answer("You are already participating in this tournament.")
         return False
 
