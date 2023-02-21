@@ -25,7 +25,7 @@ def banned_filter(_, __, message):
     try:
         user = User.objects.get(telegram_id=message.from_user.id)
 
-        if __.get_chat_member(config("MAIN_CHANNEL"), message.from_user.id) and __.get_chat_member("Fpl_Phoenix", message.from_user.id):
+        if __.get_chat_member(config("MAIN_CHANNEL"), message.from_user.id):
             if user.status == "banned":
                 user.status = "user"
                 user.save()
