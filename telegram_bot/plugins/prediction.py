@@ -35,7 +35,7 @@ def prediction_menu(client: Client, message: Message):
     user = User.objects.get(telegram_id=message.from_user.id)
 
     if config("BOT_PREDICTION_MODE") == "ON":
-        if user.phone_number:
+        if user.phone_number or not user.phone_number:
             if not user.predictions.filter(GW__finished=False).exists():
                 # Here we should send the prediction WebApp.
                 prediction_token = secrets.token_urlsafe(32)
